@@ -9,7 +9,7 @@
             </h2>
             <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
 
-                <TextAreaInput label="កត់ចំណាំ" v-model="draft" placeholder="Location" required />
+                <TextAreaInput label="កត់ចំណាំ" v-model="draft" placeholder="Tag a note" required />
 
                 <div class="flex justify-end gap-3 mt-4">
                     <Button @click="handleClose" type="button" variant="red" class="rounded-none font-bayon">
@@ -31,7 +31,6 @@ import TextFieldInput from '../../components/ui/TextFieldInput.vue'
 import Button from '../../components/ui/Button.vue';
 import { useNotification } from '../../composables/useNotification';
 import TextAreaInput from '../../components/ui/TextAreaInput.vue';
-import Table from '../../types/table';
 import { tableStore } from '../../stores/table.store';
 
 

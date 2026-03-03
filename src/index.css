@@ -11,4 +11,12 @@
   }
 }
 
+* {
+  scrollbar-width: none; /* thin scrollbar */
+  scrollbar-color: #2563eb #bfdbfe; /* thumb color, track color */
+}
+
+.border-b-color {
+    @apply border-b-[10px] border-green-700;
+  }
 

@@ -10,18 +10,18 @@ export default {
   },
 
   // create
-  async create(category: Table): Promise<Table> {
-    const response = await api.post(`${API_URL}table/create-table`, category);
+  async create(table: Table): Promise<Table> {
+    const response = await api.post(`${API_URL}table/create-table`, table);
     return response.data;
   },
 
   // update
-async update(category: Table): Promise<Table> {
-  if (!category._id) {
+async update(table: Table): Promise<Table> {
+  if (!table._id) {
     throw new Error("ID is required");
   }
 
-  const { _id, ...payload } = category;
+  const { _id, ...payload } = table;
 
   const response = await api.patch<Table>(
     `${API_URL}table/update-table/${_id}`,

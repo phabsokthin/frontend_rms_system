@@ -79,8 +79,7 @@
 
             <!-- Pagination -->
             <div class="flex items-center justify-between mt-3">
-                <!-- Optional: CustomSelect for items per page -->
-                <!-- <CustomSelect v-model="itemsPerPage" :options="selectLimit" label="បង្ហាញ" placeholder="Select one" /> -->
+         
 
                 <Pagination :current-page="currentPage" :total-pages="totalPages" :total-items="currentData.length"
                     :items-per-page="itemsPerPage" :on-page-change="handlePageChange" />
@@ -143,7 +142,6 @@ export default {
                 isLoading.value = false
             }
         });
-
 
         // Filtered data based on searchTerm
         const filteredData = computed(() => {
