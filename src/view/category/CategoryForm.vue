@@ -5,7 +5,7 @@
         <div class="absolute inset-0 bg-black bg-opacity-50"></div>
         <div class="relative z-10 w-full max-w-md p-6 bg-white shadow-2xl ">
             <h2 class="mb-4 text-xl font-semibold text-gray-800 font-bayon">
-                បង្កើតប្រភេទថ្មី {{ updateData._id }}
+                បង្កើតប្រភេទថ្មី 
             </h2>
             <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
                 <TextFieldInput label="ឈ្មោះ" ref="firstInput" v-model="names" placeholder="Cateogry Name" class=""
@@ -17,7 +17,6 @@
                         class="rounded-none font-bayon">បោះបង់</Button>
                     <Button @click="handleSubmit" :loading="isLoading" type="submit" variant="green"
                         class="rounded-none font-bayon">បង្កើត</Button>
-
                 </div>
             </form>
         </div>

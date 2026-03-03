@@ -13,7 +13,7 @@
         @change="$emit('update:modelValue', $event.target.value)" 
         :required="required"
         :class="[
-          'block w-full px-4 py-2 pr-10 text-sm text-gray-700 bg-white border shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500',
+          'block w-full px-4 py-2.5 pr-10 text-sm text-gray-700 bg-white border-2 border-green-500 shadow-sm appearance-none focus:outline-none focus:ring-0 focus:ring-green-500 focus:border-green-500',
           selectClass || customClass
         ]"
       >
