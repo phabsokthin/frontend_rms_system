@@ -14,9 +14,11 @@
       :min="min"
       :max="max"
       :maxlength="maxlength"
+      :disabled="disabled"
       @input="updateValue"
       :class="[
         'w-full p-2 border-2 pl-3 border-green-500 focus:border-green-700 focus:outline-none transition-colors duration-200',
+        disabled ? 'bg-gray-100 cursor-not-allowed opacity-70' : '',
         className
       ]"
     />
@@ -52,6 +54,10 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
+    disabled: {           // ✅ new optional prop
+      type: Boolean,
+      default: false
+    },
     min: {
       type: Number,
       required: false
@@ -79,7 +85,6 @@ export default defineComponent({
       const target = event.target as HTMLInputElement
       let value: string | number = target.value
 
-      // Convert number type properly
       if (props.type === 'number') {
         value = target.value === '' ? '' : Number(target.value)
       }
