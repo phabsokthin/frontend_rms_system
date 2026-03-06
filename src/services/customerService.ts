@@ -10,6 +10,11 @@ export default {
     return response.data;
   },
 
+  async getAllByStatus(): Promise<Customer[]> {
+    const response = await api.get(`${API_URL}customer/get-active`);
+    return response.data;
+  },
+
   // create
   async create(data: Customer): Promise<Customer> {
     const response = await api.post(`${API_URL}customer/create`, data);

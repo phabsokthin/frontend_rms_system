@@ -8,6 +8,11 @@ export default {
     return response.data;
   },
 
+  async getAllByStatus(): Promise<PaymentType[]> {
+    const response = await api.get(`${API_URL}paymentType/get-active`);
+    return response.data;
+  },
+
   // create
   async create(data: PaymentType): Promise<PaymentType> {
     const response = await api.post(`${API_URL}paymentType/create`, data);

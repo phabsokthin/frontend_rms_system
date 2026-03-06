@@ -8,13 +8,13 @@
       <span v-if="required" class="text-red-500">*</span>
     </label>
 
-    <div class="relative inline-block" style="min-width: 14rem;">
+    <div class="relative " >
       <select
         :value="modelValue"
         @change="handleChange"
         :required="required"
         :class="[
-          'block w-full px-4 py-2.5 pr-10 text-sm text-gray-700 bg-white border-2 border-green-500 shadow-sm appearance-none focus:outline-none focus:ring-0 focus:ring-green-500 focus:border-green-500',
+          'block w-full px-4 py-2.5 pr-10 text-sm text-gray-700 bg-white border-2 font-bayon border-green-500 shadow-sm appearance-none focus:outline-none focus:ring-0 focus:ring-green-500 focus:border-green-500',
           selectClass || customClass
         ]"
       >

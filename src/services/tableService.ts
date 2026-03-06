@@ -9,6 +9,11 @@ export default {
     return response.data;
   },
 
+  async getAllByStatus(): Promise<Table[]> {
+    const response = await api.get(`${API_URL}table/get-active`);
+    return response.data;
+  },
+
   // create
   async create(table: Table): Promise<Table> {
     const response = await api.post(`${API_URL}table/create-table`, table);
