@@ -28,6 +28,16 @@ export const paymentTypeStore = defineStore("paymentType", {
       }
     },
 
+    // fetch dall data
+    async fetchDtaByStatus() {
+      try {
+        const data = await paymentTypService.getAllByStatus();
+        this.setData(data);
+      } catch (error) {
+        handleApiError(error, "Failed to fetch data");
+      }
+    },
+
     // create table
     async createData(datas: PaymentType) {
       try {

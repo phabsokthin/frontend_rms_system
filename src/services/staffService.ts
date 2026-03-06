@@ -9,6 +9,11 @@ export default {
     return response.data;
   },
 
+  async getAllByStatus(): Promise<Staff[]> {
+    const response = await api.get(`${API_URL}staff/get-active`);
+    return response.data;
+  },
+
   // create
   async create(data: Staff): Promise<Staff> {
     const response = await api.post(`${API_URL}staff/create-staff`, data);

@@ -27,6 +27,16 @@ export const staffStore = defineStore("staff", {
       }
     },
 
+    // fetch dall data
+    async fetchDtaByStatus() {
+      try {
+        const data = await staffService.getAllByStatus();
+        this.setData(data);
+      } catch (error) {
+        handleApiError(error, "Failed to fetch data");
+      }
+    },
+
     // create table
     async createData(datas: Staff) {
       try {

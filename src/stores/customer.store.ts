@@ -29,6 +29,16 @@ export const customerStore = defineStore("customer", {
       }
     },
 
+    // fetch dall data
+    async fetchDtaByStatus() {
+      try {
+        const data = await customerService.getAllByStatus();
+        this.setData(data);
+      } catch (error) {
+        handleApiError(error, "Failed to fetch data");
+      }
+    },
+
     // create table
     async createData(datas: Customer) {
       try {

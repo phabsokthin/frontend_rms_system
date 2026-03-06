@@ -27,6 +27,16 @@ export const tableStore = defineStore("table", {
       }
     },
 
+    // fetch dall data
+    async fetchDataByActive() {
+      try {
+        const data = await tableService.getAllByStatus();
+        this.setData(data);
+      } catch (error) {
+        handleApiError(error, "Failed to fetch data");
+      }
+    },
+
     // create table
     async createData(table: Table) {
       try {

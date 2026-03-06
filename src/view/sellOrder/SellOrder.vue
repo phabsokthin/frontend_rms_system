@@ -11,9 +11,9 @@
                 <div class="flex gap-2">
                     <TextFieldInput v-model="searchTerm" placeholder="ស្វែងរកផលិតផល" class="font-bayon" />
 
-                    <Button @click="handleCreatePopup" variant="green" class="rounded-none font-bayon">
+                    <!-- <Button @click="handleCreatePopup" variant="green" class="rounded-none font-bayon">
                         + បង្កើតថ្មី
-                    </Button>
+                    </Button> -->
                 </div>
             </div>
 
@@ -168,7 +168,7 @@
                     <span>${{ totalPrice }}</span>
                 </div>
 
-                <Button @click="handlePayment" class="flex w-full mt-3 rounded-none font-bayon" variant="green">
+                <Button @click="handleViewPayment" class="flex w-full mt-3 rounded-none font-bayon" variant="green">
                     <div class="flex gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -186,7 +186,7 @@
 
         <!-- Dynamic Component -->
         <div>
-            <component :is="currentComponent" @close="currentComponent = ''" :loadData="loadData"
+            <component :is="currentComponent" :clearCart="clearCart" @close="currentComponent = ''" :loadData="loadData"
                 :updateData="updateData" />
         </div>
 
@@ -207,7 +207,7 @@ import { useNotification } from "../../composables/useNotification";
 import type Product from "../../types/product";
 import { localServer } from "../../../server/localServer";
 import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
-
+import SellOrderInfo from "./SellOrderInfo.vue";
 
 
 export default {
@@ -217,6 +217,7 @@ export default {
         Loading,
         DeletePopup,
         TextFieldInput,
+        SellOrderInfo
     },
 
     setup() {
@@ -229,7 +230,7 @@ export default {
         const searchTerm = ref("");
 
         const currentComponent = ref("");
-        const updateData = ref("");
+        const updateData = ref<Product | any>(null);
 
         const { notify } = useNotification();
 
@@ -291,10 +292,7 @@ export default {
             currentPage.value = 1;
         });
 
-        const handleCreatePopup = () => {
-            currentComponent.value = "CategoryForm";
-            updateData.value = "";
-        };
+
 
         const addToCart = (product: Product) => {
             const exist = cart.value.find((p) => p._id === product._id);
@@ -340,10 +338,6 @@ export default {
             cart.value = cart.value.filter(item => item._id !== id)
         }
 
-        // Clear entire cart
-        const clearCart = () => {
-            cart.value = []
-        }
 
 
         const increaseQty = (id: string) => {
@@ -362,9 +356,10 @@ export default {
                 removeFromCart(id)
             }
         }
+
         const handlePayment = () => {
             if (cart.value.length === 0) {
-                 notify({
+                notify({
                     message: "រទះរបស់អ្នកគឺទទេរ។ សូមជ្រើសរើសផលិត",
                     type: "warning",
                 })
@@ -394,6 +389,43 @@ export default {
             //    .catch(err => console.error(err))
         }
 
+        const handleViewPayment = () => {
+
+            if (cart.value.length === 0) {
+                notify({
+                    message: "រទះរបស់អ្នកគឺទទេរ។ សូមជ្រើសរើសផលិត",
+                    type: "warning",
+                })
+                return
+            }
+            else {
+                currentComponent.value = "SellOrderInfo";
+
+                const paymentPayload = {
+                    items: cart.value.map(item => ({
+                        product_id: item._id,
+                        qty: item.qty,
+                        price: item.price,
+                        subtotal: item.qty * item.price
+                    })),
+                    total_amount: cart.value.reduce((sum, item) => sum + item.qty * item.price, 0)
+                }
+
+
+
+
+                updateData.value = paymentPayload
+
+            }
+
+        };
+
+        // Clear entire cart
+        function clearCart() {
+            cart.value = []
+        }
+
+
         return {
             currentData,
             currentPage,
@@ -403,7 +435,7 @@ export default {
             handlePageChange,
             searchTerm,
             currentComponent,
-            handleCreatePopup,
+            handleViewPayment,
             loadData,
             updateData,
             cart,
@@ -418,7 +450,8 @@ export default {
             increaseQty,
             decreaseQty,
             faTimes,
-            handlePayment
+            handlePayment,
+            clearCart
         };
     },
 };
