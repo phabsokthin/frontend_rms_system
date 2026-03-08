@@ -2,12 +2,15 @@ import api from "../api/apiConfig";
 import { API_URL } from "../config/config";
 import type Supplier from "../types/supplier";
 
-
-
-
 export default {
   async getAll(): Promise<Supplier[]> {
     const response = await api.get(`${API_URL}supplier/get`);
+    return response.data;
+  },
+
+  //get status
+  async getAllStatus(): Promise<Supplier[]> {
+    const response = await api.get(`${API_URL}supplier/get-active`);
     return response.data;
   },
 

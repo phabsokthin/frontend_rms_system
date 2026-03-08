@@ -82,7 +82,7 @@
 
 
                             <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.staff_id?.first_name }} + {{ data.staff_id?.last_name }}
+                                {{ data.staff_id?.first_name }}  {{ data.staff_id?.last_name }}
                             </td>
 
 
@@ -94,6 +94,8 @@
 
                             <td class="px-6 py-3 border whitespace-nowrap">
                                 {{ data.tax }}
+                                   <span v-if="data.currency==='usd'">$</span>
+                                      <span v-else>៛</span>
                             </td>
 
 
@@ -103,6 +105,8 @@
 
                             <td class="px-6 py-3 border whitespace-nowrap">
                                 {{ data.total_amount }}
+                                   <span v-if="data.currency==='usd'">$</span>
+                                      <span v-else>៛</span>
                             </td>
                             <!-- <td class="px-6 py-3 border whitespace-nowrap">
                         
