@@ -57,6 +57,16 @@ export const tableStore = defineStore("table", {
       }
     },
 
+    // update Data
+    async updateStatus(table: Table) {
+      try {
+        const data = await tableService.updateStatus(table);
+        return data;
+      } catch (error) {
+        handleApiError(error, "Failed to update data");
+      }
+    },
+
     // delete data
     async deleteData(id: string) {
       try {

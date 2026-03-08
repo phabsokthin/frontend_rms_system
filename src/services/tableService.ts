@@ -36,6 +36,22 @@ async update(table: Table): Promise<Table> {
   return response.data;
 },
 
+// update status
+
+async updateStatus(table: Table): Promise<Table> {
+  if (!table._id) {
+    throw new Error("ID is required");
+  }
+
+  const { _id, ...payload } = table;
+
+  const response = await api.patch<Table>(
+    `${API_URL}table/update-table/${_id}/status`,
+    payload
+  );
+
+  return response.data;
+},
   // delete
   async delete(id: string) {
     const response = await api.delete(`${API_URL}table/delete-table/${id}`);

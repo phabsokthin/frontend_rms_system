@@ -11,8 +11,9 @@
             <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
                 <TextFieldInput label="ត្រកូល" v-model="first_name" placeholder="First Name" required />
                 <TextFieldInput label="ឈ្មោះ" v-model="last_name" placeholder="Last Name" required />
+                 <TextFieldInput label="លេខទូរស័ព្ទ" v-model="phone" placeholder="Enter Phone" required />
                 <TextFieldInput label="អ៊ីម៉ែល" v-model="email" placeholder="Enter Email" />
-                <TextFieldInput label="លេខទូរស័ព្ទ" v-model="phone" placeholder="Enter Phone" />
+               
                 <TextFieldInput label="អាស័យដ្ឋាន" v-model="address" placeholder="Enter Address" />
                 <TextAreaInput label="កំណត់ត្រា" v-model="notes" placeholder="Notes" />
 

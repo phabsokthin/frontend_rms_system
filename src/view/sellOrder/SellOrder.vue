@@ -9,33 +9,38 @@
                 <h1 class="text-xl font-bayon">ផ្ទាំងលក់</h1>
 
                 <div class="flex gap-2">
-                    <TextFieldInput v-model="searchTerm" placeholder="ស្វែងរកផលិតផល" class="font-bayon" />
-
-                    <!-- <Button @click="handleCreatePopup" variant="green" class="rounded-none font-bayon">
-                        + បង្កើតថ្មី
-                    </Button> -->
                 </div>
             </div>
 
-            <div class="flex gap-2 mb-3 overflow-x-auto">
 
-                <button @click="selectedCategory = null" :class="[
-                    'px-3 py-1 border font-bayon whitespace-nowrap',
-                    !selectedCategory ? 'bg-green-500 text-white' : 'bg-white'
-                ]">
-                    ទាំងអស់
-                </button>
+            <div class="flex items-center justify-between gap-2">
 
-                <button v-for="cat in categories" :key="cat._id" @click="selectedCategory = cat._id" :class="[
-                    'px-3 py-1 border font-bayon whitespace-nowrap',
-                    selectedCategory === cat._id
-                        ? 'bg-green-500 text-white'
-                        : 'bg-white'
-                ]">
-                    {{ cat.name }}
-                </button>
+                <!-- Categories -->
+                <div class="flex w-full gap-2 mb-2 overflow-x-auto whitespace-nowrap">
+
+                    <button @click="selectedCategory = null" :class="[
+                        'px-3 py-2 border font-bayon flex-shrink-0 ',
+                        !selectedCategory ? 'bg-green-500 text-white' : 'bg-white'
+                    ]">
+                        ទាំងអស់
+                    </button>
+
+                    <button v-for="cat in categories" :key="cat._id" @click="selectedCategory = cat._id" :class="[
+                        'px-3 py-1 border font-bayon flex-shrink-0',
+                        selectedCategory === cat._id
+                            ? 'bg-green-500 text-white'
+                            : 'bg-white'
+                    ]">
+                        {{ cat.name }}
+                    </button>
+
+                </div>
+
+                <!-- Search -->
+                <TextFieldInput v-model="searchTerm" placeholder="ស្វែងរកផលិតផល" class="w-full mb-2 font-bayon" />
 
             </div>
+
             <div v-if="isLoading">
                 <Loading />
             </div>
@@ -74,7 +79,7 @@
                         </span>
 
                         <div class="text-xs text-gray-400">
-                            <span v-if="item.is_manage_stock === false" class="text-green-600">មិនគ្រប់គ្រងស្តុក</span>
+                            <span v-if="item.is_manage_stock === false" class="text-green-600">ទូទៅ</span>
                             <span v-else> {{ item.qty }} ស្តុក</span>
                         </div>
                     </div>
@@ -86,9 +91,7 @@
             <div class="flex items-center justify-between mt-3">
                 <Pagination :current-page="currentPage" :total-pages="totalPages" :total-items="currentData.length"
                     :items-per-page="itemsPerPage" :on-page-change="handlePageChange" />
-
             </div>
-
         </div>
 
         <!-- RIGHT SIDE (CART) -->
@@ -186,9 +189,11 @@
 
         <!-- Dynamic Component -->
         <div>
-            <component :is="currentComponent" :clearCart="clearCart" @close="currentComponent = ''" :loadData="loadData"
-                :updateData="updateData" />
+            <component :is="currentComponent" :sellData="sellData" :clearCart="clearCart" @close="currentComponent = ''"
+                :loadData="loadData" :updateData="updateData" />
         </div>
+
+        <!-- <pre>{{ sellData }}</pre> -->
 
     </div>
 </template>
@@ -208,6 +213,9 @@ import type Product from "../../types/product";
 import { localServer } from "../../../server/localServer";
 import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import SellOrderInfo from "./SellOrderInfo.vue";
+import { sellOrderStore } from "../../stores/sellOrder.store";
+import { useRoute } from "vue-router";
+import SellOrder from "../../types/sellOrder";
 
 
 export default {
@@ -222,6 +230,9 @@ export default {
 
     setup() {
         const product = producStore();
+
+        //for update 
+        const sellOrder = sellOrderStore()
 
         const currentData = ref<Product[]>([]);
         const currentPage = ref(1);
@@ -240,12 +251,73 @@ export default {
         const selectedCategory = ref<string | null>(null)
 
 
+        //for set update and display cart
+        const route = useRoute();
+        const id = ref<string | undefined>(route.params.id as string | undefined);
+        const sellData = ref<SellOrder | null>(null)
+
+
+        const loadOrderOrProducts = async (orderId?: string) => {
+            isLoading.value = true;
+
+            try {
+                if (orderId && orderId.trim() !== "") {
+                    // EDIT ORDER
+                    const res = await sellOrder.fetchById(orderId);
+                    sellData.value = res as SellOrder;
+
+                    cart.value = sellData.value?.items?.map((item: any) => ({
+                        _id: item.product_id._id,
+                        name: item.product_id.name,
+                        price: item.price,
+                        image_url: item.product_id.image_url,
+                        qty: item.qty,
+                    })) || [];
+                } else {
+
+                    // NEW ORDER → clear
+                    sellData.value = null;
+                    cart.value = [];
+
+                    // // Fetch products for menu
+                    // await product.fetchDtaByStatus();
+                    // currentData.value = product.getProduct;
+                }
+            } catch (err) {
+                console.log(err);
+                sellData.value = null;
+                cart.value = [];
+            } finally {
+                isLoading.value = false;
+            }
+        };
+
+        // initial load
+        onMounted(() => {
+            loadOrderOrProducts(id.value);
+        });
+
+        // watch route param changes
+        watch(
+            () => route.params.id,
+            (newId) => {
+                id.value = newId as string | undefined;
+                loadOrderOrProducts(id.value);
+            }
+        );
+
+        // end of load cart
+
+
+
+        // noral fetch product
         onMounted(async () => {
             isLoading.value = true;
 
             try {
                 await product.fetchDtaByStatus();
                 currentData.value = product.getProduct;
+
             } catch (err) {
                 console.log(err);
             } finally {
@@ -313,14 +385,8 @@ export default {
             }, 0);
         });
 
-        async function loadData() {
-            await product.fetchDta();
-            currentData.value = product.getProduct;
-        }
-
 
         //filter by category
-
         const categories = computed(() => {
             const map = new Map()
 
@@ -338,8 +404,6 @@ export default {
             cart.value = cart.value.filter(item => item._id !== id)
         }
 
-
-
         const increaseQty = (id: string) => {
             const product = cart.value.find(item => item._id === id)
             if (product) {
@@ -355,38 +419,6 @@ export default {
                 // Optional: remove item if qty goes to 0
                 removeFromCart(id)
             }
-        }
-
-        const handlePayment = () => {
-            if (cart.value.length === 0) {
-                notify({
-                    message: "រទះរបស់អ្នកគឺទទេរ។ សូមជ្រើសរើសផលិត",
-                    type: "warning",
-                })
-                return
-            }
-
-            // Build the payment payload
-            const paymentPayload = {
-                items: cart.value.map(item => ({
-                    product_id: item._id,
-                    qty: item.qty,
-                    price: item.price,
-                    subtotal: item.qty * item.price
-                })),
-                total: cart.value.reduce((sum, item) => sum + item.qty * item.price, 0)
-            }
-
-            console.log("Payment Payload:", paymentPayload)
-
-            // Here you can send it to API
-            // Example: 
-            // api.post('/payment', paymentPayload)
-            //    .then(() => {
-            //       alert("Payment successful")
-            //       cart.value = [] // clear cart
-            //    })
-            //    .catch(err => console.error(err))
         }
 
         const handleViewPayment = () => {
@@ -410,19 +442,34 @@ export default {
                     })),
                     total_amount: cart.value.reduce((sum, item) => sum + item.qty * item.price, 0)
                 }
-
-
-
-
                 updateData.value = paymentPayload
-
             }
-
         };
+
+        async function loadData() {
+            await product.fetchDta();
+
+            // Filter products: hide stock-managed products with qty = 0
+            currentData.value = product.getProduct.filter(
+                (p) => !(p.is_manage_stock && p.qty === 0)
+            );
+        }
 
         // Clear entire cart
         function clearCart() {
             cart.value = []
+
+            //clear order when update
+            watch(
+                () => route.params.id,
+                (newId) => {
+                    id.value = newId as string | undefined;
+                    loadOrderOrProducts(id.value);
+                }
+            );
+
+            loadData()
+
         }
 
 
@@ -450,8 +497,9 @@ export default {
             increaseQty,
             decreaseQty,
             faTimes,
-            handlePayment,
-            clearCart
+            // handlePayment,
+            clearCart,
+            sellData
         };
     },
 };

@@ -6,6 +6,7 @@
         <div class="absolute inset-0 bg-black bg-opacity-50"></div>
 
         <!-- Modal Box -->
+
         <div
             class="relative z-10 w-[800px] max-h-[90vh] p-6 bg-white shadow-2xl overflow-y-auto border-r-4 border-r-green-600 border-t-4 border-t-green-600 border-r-6 ">
 
@@ -17,6 +18,9 @@
                 <!-- Table Selection as Buttons -->
                 <div class="mb-4">
                     <label class="block mb-1 text-gray-700 font-bayon">លេខតុ <span class="text-red-500">*</span></label>
+                    <div v-if="sellData?.table_id?.table_number" class="mb-2 underline">
+                        <span class="font-bayon">លេខតុបច្ចុប្បន្ន:</span> {{ sellData?.table_id?.table_number }}
+                    </div>
                     <div class="grid grid-cols-4 gap-2">
                         <button v-for="table in currentTableOpt" :key="table.value" type="button"
                             @click="tableName = table.value" :class="[
@@ -34,6 +38,8 @@
                         </button>
                     </div>
                 </div>
+
+
 
                 <!-- Customer & Staff -->
                 <div class="grid grid-cols-2 gap-4">
@@ -58,9 +64,15 @@
                         <TextFieldInput v-model="total_amount" label="សរុប" placeholder="Total" disabled
                             class="font-bold text-green-700 border-none" />
                     </div>
-                    <div class="mt-2">
+                    <div class="grid grid-cols-3 gap-4 mt-2">
                         <TextFieldInput v-model="payment" label="បង់ប្រាក់" placeholder="បង់ប្រាក់" type="number"
-                            required :min="0" class="font-bold text-green-700 border-none" />
+                            required :min="0" class="col-span-2 font-bold text-green-700 border-none" />
+
+                        <Select v-model="currency" :options="currencyOpt" label="រូបិយប័ណ្ណ" required
+                            placeholder="រូបិយប័ណ្ណ" />
+                    </div>
+
+                    <div class="mt-2">
 
                     </div>
 
@@ -75,11 +87,7 @@
                             </div>
                         </div>
                     </div>
-
-
                 </fieldset>
-
-
 
                 <!-- Buttons -->
                 <div class="flex justify-end gap-3 mt-4">
@@ -89,11 +97,22 @@
                     <Button :loading="isLoading" type="submit" variant="green"
                         class="gap-2 text-center rounded-none font-bayon">
                         <div class="flex gap-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote-arrow-up-icon lucide-banknote-arrow-up"><path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="M18 12h.01"/><path d="M19 22v-6"/><path d="m22 19-3-3-3 3"/><path d="M6 12h.01"/><circle cx="12" cy="12" r="2"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-banknote-arrow-up-icon lucide-banknote-arrow-up">
+                                <path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5" />
+                                <path d="M18 12h.01" />
+                                <path d="M19 22v-6" />
+                                <path d="m22 19-3-3-3 3" />
+                                <path d="M6 12h.01" />
+                                <circle cx="12" cy="12" r="2" />
+                            </svg>
                             <span>បញ្ចប់ការទូទាត់</span>
                         </div>
                     </Button>
                 </div>
+                <!-- <pre>{{ updateData.total_amount }}</pre> -->
 
             </form>
         </div>
@@ -114,6 +133,9 @@ import { paymentTypeStore } from "../../stores/paymentType.store"
 import { customerStore } from "../../stores/customer.store"
 
 import { useNotification } from "../../composables/useNotification"
+import { sellOrderStore } from "../../stores/sellOrder.store"
+import SellOrder from "../../types/sellOrder"
+import { useRoute, useRouter } from "vue-router"
 
 
 export default {
@@ -125,16 +147,20 @@ export default {
         TextAreaInput
     },
 
-    props: ["updateData", "clearCart"],
+    props: ["updateData", "clearCart", "loadData", "sellData"],
 
     setup(props, { emit }) {
 
+        const sellOrder = sellOrderStore()
         const table = tableStore()
         const staff = staffStore()
         const paymentType = paymentTypeStore()
         const customer = customerStore()
 
         const { notify } = useNotification()
+        const router = useRouter()
+
+
 
         const isLoading = ref(false)
 
@@ -148,11 +174,45 @@ export default {
         const total_amount = ref(0)
         const payment = ref(0)
         const notes = ref("")
+        const currency = ref("")
 
         const currentTableOpt = ref<{ label: string; value: string, capicity: number }[]>([])
         const currentStaffOpt = ref<{ label: string; value: string }[]>([])
         const paymentTypeOpt = ref<{ label: string; value: string }[]>([])
         const customerOpt = ref<{ label: string; value: string }[]>([])
+
+
+        const route = useRoute();
+        const id = ref<string | undefined>(route.params.id as string | undefined);
+
+
+
+
+        const currencyOpt = ref([
+            { label: "USD", value: "usd" },
+            { label: "KHR", value: "khr" }
+        ])
+
+
+
+        //update sell order display
+
+        onMounted(() => {
+            if (props.sellData) {
+                tableName.value = props.sellData.table_id?._id
+                staffName.value = props.sellData.staff_id?._id
+                paymentTypeName.value = props.sellData.payment_type_name
+                customerName.value = props.sellData.customer_id?._id
+                tax.value = props.sellData.tax
+                discount.value = props.sellData.discount
+                total_amount.value = props.sellData.total_amount
+                payment.value = props.sellData.payment
+                paymentTypeName.value = props.sellData.payment_type_id?._id
+                notes.value = props.sellData.notes
+                currency.value = props.sellData.currency
+
+            }
+        })
 
         // Fetch data
         onMounted(async () => {
@@ -192,7 +252,20 @@ export default {
                 isLoading.value = false
             }
 
-            total_amount.value = props.updateData.total_amount
+
+            // if (!id) {
+            //     total_amount.value = props.updateData.total_amount
+            // }
+            // else if (props.updateData) {
+
+            // }
+
+
+            total_amount.value = props.updateData.total_amount + tax.value - discount.value
+            // console.log("id", id)
+
+
+
         })
 
         // Auto calculate total
@@ -206,9 +279,9 @@ export default {
                 Number(discount.value)
         })
 
+
+
         // Clear data
-
-
         const handleClose = () => {
             emit("close")
         }
@@ -222,69 +295,94 @@ export default {
         // បង្ហាញជាទ្រង់ទ្រាយលេខ
         const remainingAmountDisplay = computed(() => {
             const value = remainingAmount.value;
-            if (value > 0) return `បង់លើស: ${value}`;   // បង់លើស
-            if (value < 0) return `សល់: ${-value}`;       // ខ្វះ
-            return 'បានបង់ពេញ';
+            if (value > 0) return `បង់លើស: ${-value}`;
+            if (value < 0) return `សល់: ${value}`;
+            return 'ទូទាត់ពេញ';
         });
 
+
         const handleSubmit = async () => {
+            isLoading.value = true
+            try {
 
-            // Check if table is selected
-            if (!tableName.value) {
-                notify({
-                    type: "error",
-                    message: "សូមជ្រើសរើសលេខតុ! (Please select a table)"
-                })
-                return // stop submission
+
+                // Check if table is selected
+                if (!tableName.value) {
+                    notify({
+                        type: "error",
+                        message: "សូមជ្រើសរើសលេខតុ! (Please select a table)"
+                    })
+                    return // stop submission
+                }
+
+                // Optional: check other required fields
+                if (!customerName.value) {
+                    notify({
+                        type: "error",
+                        message: "សូមជ្រើសរើសអតិថិជន! (Please select a customer)"
+                    })
+                    return
+                }
+
+                if (!staffName.value) {
+                    notify({
+                        type: "error",
+                        message: "សូមជ្រើសរើសបុគ្គលិក! (Please select staff)"
+                    })
+                    return
+                }
+
+                if (!paymentTypeName.value) {
+                    notify({
+                        type: "error",
+                        message: "សូមជ្រើសរើសវិធីសាស្រ្តទូទាត់! (Please select payment type)"
+                    })
+                    return
+                }
+
+                // All required selected, prepare payment data
+                const data: any = {
+                    _id: props.sellData?._id,
+                    customer_id: customerName.value,
+                    table_id: tableName.value,
+                    staff_id: staffName.value,
+                    payment_type_id: paymentTypeName.value,
+                    tax: Number(tax.value),
+                    discount: Number(discount.value),
+                    payment: Number(payment.value),
+                    total_amount: remainingAmount.value,
+                    notes: notes.value,
+                    items: props.updateData.items,
+                    currency: currency.value
+                }
+
+
+
+                if (props.sellData?._id) {
+
+                    const res: any = await sellOrder.updateData(data)
+                    // await table.updateStatus(dataTable as any)
+                    notify({ message: res?.message || 'PaymentType updated', type: 'success' })
+                    router.push({ name: 'Sell' })
+                }
+
+                else {
+                    const res: any = await sellOrder.createData(data)
+
+                    //   await props.loadData()
+                    notify({ message: res?.message || 'PaymentType created', type: 'success' })
+
+                }
+                props.clearCart()
+                handleClose()
+
+
+            } catch (err: any) {
+                notify({ message: err.message || 'Operation failed', type: 'warning' })
             }
-
-            // Optional: check other required fields
-            if (!customerName.value) {
-                notify({
-                    type: "error",
-                    message: "សូមជ្រើសរើសអតិថិជន! (Please select a customer)"
-                })
-                return
+            finally {
+                isLoading.value = false
             }
-
-            if (!staffName.value) {
-                notify({
-                    type: "error",
-                    message: "សូមជ្រើសរើសបុគ្គលិក! (Please select staff)"
-                })
-                return
-            }
-
-            if (!paymentTypeName.value) {
-                notify({
-                    type: "error",
-                    message: "សូមជ្រើសរើសវិធីសាស្រ្តទូទាត់! (Please select payment type)"
-                })
-                return
-            }
-
-            // All required selected, prepare payment data
-            const data = {
-                customer_id: customerName.value,
-                table_id: tableName.value,
-                staff_id: staffName.value,
-                payment_type_id: paymentTypeName.value,
-                tax: Number(tax.value),
-                discount: Number(discount.value),
-                // total_amount: Number(total_amount.value),
-                payment: Number(payment.value),
-                total_amount: remainingAmount.value,
-                notes: notes.value,
-                items: props.updateData.items
-            }
-
-            props.clearCart()
-            console.log("Payment Data:", data)
-
-            notify({
-                type: "success",
-                message: "Payment data prepared"
-            })
         }
         return {
 
@@ -297,11 +395,13 @@ export default {
             discount,
             total_amount,
             notes,
+            currency,
 
             currentTableOpt,
             currentStaffOpt,
             paymentTypeOpt,
             customerOpt,
+            currencyOpt,
 
             handleClose,
             handleSubmit,
@@ -309,6 +409,7 @@ export default {
             isLoading,
             payment,
             remainingAmountDisplay
+
 
         }
     }

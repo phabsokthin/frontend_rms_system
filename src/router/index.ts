@@ -18,6 +18,7 @@ import Product from "../view/product/Product.vue";
 import SellOrder from "../view/sellOrder/SellOrder.vue";
 import Purchase from "../view/purchase/Purchase.vue";
 import Expense from "../view/expense/Expense.vue";
+import SellOrderList from "../view/sellOrder/SellOrderList.vue";
 import Test from "../view/report/Test.vue";
 
 const routes: RouteRecordRaw[] = [
@@ -75,10 +76,16 @@ const routes: RouteRecordRaw[] = [
         component: Product,
       },
       {
-        path: "sell",
+        path: "sell/:id?",
         name: "Sell",
         component: SellOrder,
       },
+      {
+        path: "sellList",
+        name: "SellList",
+        component: SellOrderList,
+      },
+
       {
         path: "purchase",
         name: "Purchase",
@@ -90,7 +97,7 @@ const routes: RouteRecordRaw[] = [
         name: "Expense",
         component: Expense,
       },
-        {
+      {
         path: "test",
         name: "Test",
         component: Test,
