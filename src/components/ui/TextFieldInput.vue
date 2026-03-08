@@ -16,6 +16,7 @@
       :maxlength="maxlength"
       :disabled="disabled"
       @input="updateValue"
+      :step="type === 'number' ? 'any' : undefined" 
       :class="[
         'w-full p-2 border-2 pl-3 border-green-500 focus:border-green-700 focus:outline-none transition-colors duration-200',
         disabled ? 'bg-gray-100 cursor-not-allowed opacity-70' : '',
@@ -54,7 +55,7 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    disabled: {           // ✅ new optional prop
+    disabled: {
       type: Boolean,
       default: false
     },
@@ -77,6 +78,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const inputRef = ref<HTMLInputElement | null>(null)
 
+    // expose focus method
     defineExpose({
       focus: () => inputRef.value?.focus()
     })
@@ -86,7 +88,8 @@ export default defineComponent({
       let value: string | number = target.value
 
       if (props.type === 'number') {
-        value = target.value === '' ? '' : Number(target.value)
+        // allow empty string
+        value = target.value === '' ? '' : parseFloat(target.value)
       }
 
       emit('update:modelValue', value)

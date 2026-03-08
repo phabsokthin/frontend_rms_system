@@ -89,7 +89,13 @@
 
 
                             <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.qty }}
+
+                                <div>
+                                    <div v-if="data.is_manage_stock && data.qty === 0">
+                                        <span class="p-1 text-sm text-red-500 bg-red-100 rounded-md font-bayon">អស់ស្តុក</span>
+                                    </div>
+                                    <span v-else>{{ data.qty }}</span>
+                                </div>
                             </td>
 
 
@@ -97,7 +103,7 @@
                                 <span :class="data.is_manage_stock
                                     ? 'text-green-600 font-semibold'
                                     : 'text-red-600 font-semibold'">
-                                    {{ data.status ? 'គ្រប់គ្រងស្តុក' : 'មិនគ្រប់គ្រងស្តុក' }}
+                                    {{ data.status ? 'មិនគ្រប់គ្រងស្តុក' : 'គ្រប់គ្រងស្តុក' }}
                                 </span>
                             </td>
 
@@ -117,11 +123,11 @@
                                     class="object-cover w-16 h-16 border rounded" />
 
                                 <span v-else class="text-sm text-gray-400">
-                                    <img src="https://bunchobagels.com/wp-content/uploads/2024/09/placeholder.jpg" class="w-20"
-                                        alt="">
+                                    <img src="https://bunchobagels.com/wp-content/uploads/2024/09/placeholder.jpg"
+                                        class="w-20" alt="">
                                 </span>
 
-                                
+
                             </td>
                             <!-- Actions -->
                             <td class="py-3 text-center border whitespace-nowrap">
@@ -178,7 +184,7 @@ import ProductForm from './ProductForm.vue';
 
 
 export default {
-    components: { Button, Pagination, Loading, DeletePopup, TextFieldInput,ProductForm },
+    components: { Button, Pagination, Loading, DeletePopup, TextFieldInput, ProductForm },
     setup() {
         const product = producStore();
         const currentData = ref<Product[]>([]);
