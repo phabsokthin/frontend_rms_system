@@ -1,46 +1,41 @@
 import { defineStore } from "pinia";
 import { handleApiError } from "../utils/handleError";
-import type Supplier from "../types/supplier";
-import supplierService from "../services/supplierService";
+import type Purchase from "../types/purchase";
+import purchaseService from "../services/purchaseService";
 
-export const supplierStore = defineStore("supplier", {
+
+
+
+export const purchaseStore = defineStore("purchase", {
   state: () => ({
-    data: [] as Supplier[], 
+    data: [] as Purchase[], 
   }),
 
   getters: {
-    getSupplier: (state) => state.data,
+    getPurchase: (state) => state.data,
   },
 
   actions: {
-    setData(data: Supplier[]) {
+    setData(data: Purchase[]) {
       this.data = data;
     },
 
     // fetch dall data
     async fetchDta() {
       try {
-        const data = await supplierService.getAll();
+        const data = await purchaseService.getAll();
         this.setData(data);
       } catch (error) {
         handleApiError(error, "Failed to fetch data");
       }
     },
 
-    // fetch by status
-    async fetchDtaByStatus() {
-      try {
-        const data = await supplierService.getAllStatus();
-        this.setData(data);
-      } catch (error) {
-        handleApiError(error, "Failed to fetch data");
-      }
-    },
+    
 
     // create table
-    async createData(datas: Supplier) {
+    async createData(datas: Purchase) {
       try {
-        const data = await supplierService.create(datas);
+        const data = await purchaseService.create(datas);
         return data;
       } catch (error) {
         handleApiError(error, "Failed to create data");
@@ -48,9 +43,9 @@ export const supplierStore = defineStore("supplier", {
     },
 
     // update Data
-    async updateData(datas: Supplier) {
+    async updateData(datas: Purchase) {
       try {
-        const data = await supplierService.update(datas);
+        const data = await purchaseService.update(datas);
         return data;
       } catch (error) {
         handleApiError(error, "Failed to update data");
@@ -61,7 +56,7 @@ export const supplierStore = defineStore("supplier", {
     async deleteData(id: string) {
       try {
         // Call API to delete
-        const data = await supplierService.delete(id);
+        const data = await purchaseService.delete(id);
 
         return data;
       } catch (error) {

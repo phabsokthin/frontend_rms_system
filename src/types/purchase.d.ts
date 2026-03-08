@@ -1,0 +1,29 @@
+export default interface Purchase {
+    _id: string;
+    supplier_id: {
+        _id: string;
+        name: string;
+        contact_person: string;
+        phone: string;
+        email: string;
+        address: string;
+        status: boolean;
+        created_at: string;
+        updated_at: string;
+    };
+    purchase_date: string;
+    items: {
+        product_id: string;
+        qty: number;
+        price: number;
+        subtotal: number;
+    }[];
+    currency: string;
+    total_amount: number;
+    status: string;
+    notes: string;
+    created_at: string;
+    updated_at: string;
+}
+
+

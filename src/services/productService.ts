@@ -13,6 +13,12 @@ export default {
     return response.data;
   },
 
+  // get manage stock
+    async getManageStock(): Promise<Product[]> {
+    const response = await api.get(`${API_URL}product/get-manage-stock`);
+    return response.data;
+  },
+
   // create
   async create(data: Product): Promise<Product> {
     const response = await api.post(`${API_URL}product/create`, data, {

@@ -14,7 +14,7 @@
             <!-- Table -->
 
             <div class="overflow-x-auto bg-white border border-gray-200 ">
-                <table class="min-w-[1300px] w-full border-collapse">
+                <table class="min-w-[1800px] w-full border-collapse">
 
                     <!-- ================= HEADER ================= -->
                     <thead>
