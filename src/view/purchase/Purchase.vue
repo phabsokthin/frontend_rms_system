@@ -5,7 +5,8 @@
             <div class="mb-[15px] flex items-center justify-between">
                 <h1 class="text-xl font-bayon">បញ្ជីការទិញចូល</h1>
                 <div class="flex gap-2">
-                    <TextFieldInput v-model="searchTerm" placeholder="ស្វែងរកអ្នកផ្គត់ផ្គង​ / លេខទូរស័ព្ទ" class="w-[250px] font-bayon" />
+                    <TextFieldInput v-model="searchTerm" placeholder="ស្វែងរកអ្នកផ្គត់ផ្គង​ / លេខទូរស័ព្ទ"
+                        class="w-[250px] font-bayon" />
                     <Button @click="handleCreatePopup" variant="green" class="rounded-none font-bayon">+
                         បង្កើតថ្មី</Button>
                 </div>
@@ -25,11 +26,15 @@
                             <th class="px-6 py-3 border">អុីម៉ែល</th>
                             <th class="px-6 py-3 border">កាលបរិច្ឆេតទិញចូល</th>
                             <th class="px-6 py-3 border">ចំនួន</th>
-                            <th class="px-6 py-3 border">អាស័យដ្ឋាន</th>
+
                             <th class="px-6 py-3 border">ចំនួនសរុប</th>
+                            <th class="px-6 py-3 border">ពន្ធ</th>
+                            <th class="px-6 py-3 border">បញ្ចុះតម្លៃ</th>
+                            <th class="px-6 py-3 border">បានទូទាត់</th>
+                            <th class="px-6 py-3 border">អាស័យដ្ឋាន</th>
                             <th class="px-6 py-3 border">កត់ចំណាំ</th>
                             <th class="px-6 py-3 border">ស្ថានភាព</th>
-                            <th class="px-6 py-3 text-center border">សកម្មភាព</th>
+                            <th class="px-6 py-3 text-center border w-[200px]">សកម្មភាព</th>
                         </tr>
                     </thead>
 
@@ -52,7 +57,8 @@
 
 
                         <tr v-else v-for="(data, index) in paginatedData" :key="data._id"
-                            class="transition-colors duration-150 hover:bg-gray-50">
+                            @click="handleViewPurchase(data)"
+                            class="transition-colors duration-150 cursor-pointer hover:bg-gray-50">
 
                             <!-- Index -->
                             <td class="px-6 py-3 text-gray-900 border whitespace-nowrap">
@@ -73,7 +79,7 @@
                             <td class="px-6 py-3 border whitespace-nowrap">
                                 {{ data.supplier_id?.email }}
                             </td>
-                            
+
                             <!-- Gender -->
                             <td class="px-6 py-3 capitalize border whitespace-nowrap font-bayon">
                                 <!-- {{ data.gender }} -->
@@ -82,19 +88,36 @@
 
                             <!-- Email -->
                             <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.items.length }}
+                                {{ data.items.length }} items
                             </td>
 
-                            <!-- Position -->
-                            <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.supplier_id?.address }}
-                            </td>
 
                             <!-- Address -->
                             <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.total_amount }} 
+                                {{ data.total_amount }}
                                 <span v-if="data.currency === 'usd'">$</span>
-                                 <span v-else>៛</span>
+                                <span v-else>៛</span>
+                            </td>
+
+                            <td class="px-6 py-3 border whitespace-nowrap">
+                                {{ data.tax }}
+                                <span v-if="data.currency === 'usd'">$</span>
+                                <span v-else>៛</span>
+                            </td>
+                        
+                              <td class="px-6 py-3 border whitespace-nowrap">
+                                {{ data.discount }}
+                                <span v-if="data.currency === 'usd'">$</span>
+                                <span v-else>៛</span>
+                            </td>
+
+                              <td class="px-6 py-3 border whitespace-nowrap">
+                                {{ data.payment }}
+                                <span v-if="data.currency === 'usd'">$</span>
+                                <span v-else>៛</span>
+                            </td>
+                            <td class="px-6 py-3 border whitespace-nowrap">
+                                {{ data.supplier_id?.address }}
                             </td>
 
                             <!-- Start Time -->
@@ -102,21 +125,43 @@
                                 {{ data.notes }}
                             </td>
 
-
-
                             <!-- Status -->
                             <td class="px-6 py-3 border whitespace-nowrap font-bayon">
-                                <span v-if="data.status === 'pending'"
+                                <span @click="(e: MouseEvent) => {
+                                    e.stopPropagation();
+                                    hanldeUpdateStatus(data._id);
+                                }" v-if="data.status === 'pending'"
                                     class="p-1 text-xs text-orange-500 rounded-md bg-orange-50">កំពុងរង់ចាំ</span>
+                                <span v-if="data.status === 'received'"
+                                    class="p-1 text-xs text-green-500 rounded-md bg-green-50">បានទទួល</span>
                             </td>
 
                             <!-- Actions -->
-                            <td class="px-6 py-3 space-x-3 text-center border whitespace-nowrap">
-                                <font-awesome-icon :icon="faEdit" @click="handleUpdatePopup(data)"
-                                    class="text-xl text-blue-600 cursor-pointer hover:text-blue-700" />
-                                <font-awesome-icon :icon="faTrash"
-                                    @click="handleDeletePopup(data._id, data.supplier_id?.name)"
-                                    class="text-xl text-red-600 cursor-pointer hover:text-red-700" />
+                            <td class="flex justify-between px-6 py-3 space-x-2 text-center border whitespace-nowrap">
+
+                                <Button variant="green" @click="(e: MouseEvent) => {
+                                    e.stopPropagation();
+                                    handleViewPurchase(data);
+                                }" class="text-xs rounded-none font-bayon">
+                                    មើល
+                                </Button>
+                                <Button variant="blue" @click="(e: MouseEvent) => {
+                                    e.stopPropagation();
+                                    handleViewPurchase(data);
+                                }" class="text-xs rounded-none font-bayon">
+                                    កែប្រែ
+                                </Button>
+
+
+
+
+                                <Button variant="red" @click="(e: MouseEvent) => {
+                                    e.stopPropagation();
+                                    handleDeletePopup(data._id, data.supplier_id?.name);
+                                }"
+                                    class="text-xs text-red-600 rounded-none cursor-pointer font-bayon hover:text-white">
+                                    លុប
+                                </Button>
                             </td>
 
                         </tr>
@@ -137,11 +182,11 @@
 
 
         <div>
-            <component :is="currentComponent" @close="currentComponent = ''" :loadData="loadData"
-                :updateData="updateData" />
+            <component :is="currentComponent" :purchaseDetails="purchaseDetails" @close="currentComponent = ''"
+                :loadData="loadData" :updateData="updateData" />
         </div>
 
-   
+
     </div>
 </template>
 
@@ -159,12 +204,13 @@ import Purchase from '../../types/purchase';
 import { purchaseStore } from '../../stores/purchase.store';
 import { formatDate } from '../../utils/formatDate';
 import PurchaseForm from './PurchaseForm.vue';
+import PurcahseDetail from './PurcahseDetail.vue';
 
 
 
 
 export default {
-    components: { Button, Pagination, Loading, DeletePopup, TextFieldInput,PurchaseForm},
+    components: { Button, Pagination, Loading, DeletePopup, TextFieldInput, PurchaseForm, PurcahseDetail },
     setup() {
         const purchse = purchaseStore();
         const currentData = ref<Purchase[]>([]);
@@ -180,6 +226,7 @@ export default {
 
         const currentComponent = ref("")
         const updateData = ref("")
+        const purchaseDetails = ref<Purchase | null>(null);
 
         // Fetch data
         onMounted(async () => {
@@ -269,11 +316,46 @@ export default {
             console.log(updateData.value)
         }
 
+        const handleViewPurchase = (data: Purchase) => {
+            currentComponent.value = "PurcahseDetail"
+            purchaseDetails.value = data
+        }
+
+
+        const hanldeUpdateStatus = async (id: string) => {
+            try {
+
+                if (window.confirm("Are you sure update status")) {
+
+                    const data = {
+                        _id: id,
+                        status: "received"
+                    }
+                    await purchse.updateStatus(data as any)
+                    loadData()
+                    notify({
+                        message: "Status updated received",
+                        type: "success",
+                    })
+                    console.log(data)
+
+                }
+
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+
         // loadData
         async function loadData() {
             await purchse.fetchDta();
             currentData.value = purchse.getPurchase;
         }
+
+
+
 
         return {
             currentData,
@@ -295,7 +377,10 @@ export default {
             loadData,
             handleUpdatePopup,
             updateData,
-            formatDate
+            formatDate,
+            handleViewPurchase,
+            purchaseDetails,
+            hanldeUpdateStatus
         };
     },
 };
