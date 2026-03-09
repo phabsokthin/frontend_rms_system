@@ -92,7 +92,8 @@
 
                                 <div>
                                     <div v-if="data.is_manage_stock && data.qty === 0">
-                                        <span class="p-1 text-sm text-red-500 bg-red-100 rounded-md font-bayon">អស់ស្តុក</span>
+                                        <span
+                                            class="p-1 text-sm text-red-500 bg-red-100 rounded-md font-bayon">អស់ស្តុក</span>
                                     </div>
                                     <span v-else>{{ data.qty }}</span>
                                 </div>
@@ -100,11 +101,10 @@
 
 
                             <td class="px-6 py-3 text-sm border whitespace-nowrap font-bayon">
-                                <span :class="data.is_manage_stock
-                                    ? 'text-green-600 font-semibold'
-                                    : 'text-red-600 font-semibold'">
-                                    {{ data.status ? 'មិនគ្រប់គ្រងស្តុក' : 'គ្រប់គ្រងស្តុក' }}
-                                </span>
+                                <span v-if="data.is_manage_stock === false" class="text-red-600">មិនគ្រប់គ្រងស្តុក</span>
+                                <span v-else class="text-green-600">គ្រប់គ្រងស្តុក</span>
+
+                             
                             </td>
 
 

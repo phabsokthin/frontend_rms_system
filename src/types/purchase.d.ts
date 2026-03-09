@@ -12,6 +12,10 @@ export default interface Purchase {
         updated_at: string;
     };
     purchase_date: string;
+    tax: number,
+    discount: number;
+    payment:number;
+    
     items: {
         product_id: string;
         qty: number;

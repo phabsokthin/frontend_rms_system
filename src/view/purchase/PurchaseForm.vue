@@ -44,7 +44,7 @@
 
                                 <!-- Price -->
                                 <div class="col-span-2">
-                                    <TextFieldInput v-model="item.price" type="number" label="តម្លៃ" />
+                                    <TextFieldInput v-model="item.price" type="number" label="តម្លៃ" :min="0" />
                                 </div>
 
                                 <!-- Subtotal -->
