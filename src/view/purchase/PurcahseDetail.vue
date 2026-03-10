@@ -26,9 +26,9 @@
                             purchaseDetails.supplier_id.contact_person }}
                         </li>
                         <li><span class="font-semibold font-bayon">ទូរស័ព្ទ:</span> {{ purchaseDetails.supplier_id.phone
-                            }}</li>
+                        }}</li>
                         <li><span class="font-semibold font-bayon">អ៊ីមែល:</span> {{ purchaseDetails.supplier_id.email
-                            }}</li>
+                        }}</li>
                         <li><span class="font-semibold font-bayon">អាសយដ្ឋាន:</span> {{
                             purchaseDetails.supplier_id.address }}</li>
                     </ul>
@@ -108,6 +108,8 @@
                         purchaseDetails.currency === 'usd' ? '$' : '៛' }}</li>
                     <li><span class="font-semibold font-bayon">ការទូទាត់:</span> {{ purchaseDetails.payment }} {{
                         purchaseDetails.currency === 'usd' ? '$' : '៛' }}</li>
+
+                    <li><span class="font-semibold font-bayon">ទូទាត់តាម:</span> {{ purchaseDetails.payment_type_id?.name }} </li>
                 </ul>
             </div>
 
@@ -126,6 +128,7 @@
                     {{ purchaseDetails.currency === 'usd' ? '$' : '៛' }})
                 </span>
             </div>
+            <!-- <pre>{{ purchaseDetails }}</pre> -->
         </div>
     </div>
 </template>
