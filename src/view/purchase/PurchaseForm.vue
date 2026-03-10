@@ -18,6 +18,12 @@
 
                     <DateTime label="កាលបរិច្ឆេត" v-model="purchaseDate" required placeholder="ជ្រើសរើសកាលបរិច្ឆេត"
                         type="datetime" />
+
+                    <div v-if="updateData">
+                        <Select v-model="isCancel" :options="statusOpt" label="ស្ថានភាព" 
+                            placeholder="ស្ថានភាព" />
+
+                    </div>
                 </div>
 
                 <!-- Products -->
@@ -75,8 +81,6 @@
                 <div class="grid grid-cols-2 gap-4">
                     <!-- Total -->
 
-
-
                     <TextFieldInput v-model="tax" type="number" label="ពន្ធ" class="font-bold " :min="0" />
                     <TextFieldInput v-model="discount" type="number" label="បញ្ចុះតម្លៃ" class="font-bold " :min="0" />
                     <TextFieldInput :modelValue="totalAmount" label="សរុបចុងក្រោយ" disabled class="font-bold " />
@@ -87,9 +91,6 @@
                     <!-- Optional: show remaining/overpayment -->
                     <TextFieldInput :modelValue="remainingAmount" label="សល់/បង់លើស" disabled
                         class="col-span-2 font-bold " />
-
-
-
                 </div>
                 <div class="grid grid-cols-2 gap-4">
 
@@ -110,7 +111,6 @@
                         បង្កើត
                     </Button>
                 </div>
-
             </form>
         </div>
     </div>
@@ -155,7 +155,8 @@ export default {
         const isLoading = ref(false)
         const tax = ref(0)
         const discount = ref(0)
-        const payment = ref(0) // user input for payment
+        const payment = ref(0)
+        const isCancel = ref("")
 
 
         const { notify } = useNotification()
@@ -170,6 +171,10 @@ export default {
             { label: "KHR", value: "khr" }
         ])
 
+        const statusOpt = ref([
+            { label: "បោះបង់", value: "cancelled" },
+        ])
+
 
         const items = ref([
             {
@@ -179,6 +184,32 @@ export default {
                 subtotal: 0
             }
         ])
+
+        //onMouted Update data
+
+        onMounted(async () => {
+            if (props.updateData) {
+                supplierName.value = props.updateData.supplier_id?._id
+                purchaseDate.value = props.updateData.purchase_date
+                currency.value = props.updateData.currency
+                paymentTypeName.value = props.updateData.payment_type_id?._id
+                notes.value = props.updateData.notes
+
+                // Normalize items for form binding
+                items.value = props.updateData.items.map((item: any) => ({
+                    product_id: item.product_id?._id,
+                    qty: item.qty,
+                    price: item.price,
+                    subtotal: item.subtotal
+                }))
+
+
+                tax.value = props.updateData.tax
+                discount.value = props.updateData.discount
+                payment.value = props.updateData.payment
+            }
+        })
+
 
         // Fetch suppliers
         onMounted(async () => {
@@ -215,22 +246,6 @@ export default {
                 isLoading.value = false
             }
         })
-
-        // Fetch products
-        // onMounted(async () => {
-        //     try {
-        //         await product.fetchDtaByStatus()
-        //         currentDataByProductOption.value = product.getProduct
-        //             .filter(cat => cat.is_manage_stock !== false)
-        //             .map(cat => ({
-        //                 label: cat.name,
-        //                 value: cat._id
-        //             }))
-
-        //     } catch (err) {
-        //         console.error(err)
-        //     }
-        // })
 
 
         // Fetch paymen type
@@ -306,10 +321,8 @@ export default {
                     if (!item.product_id) return
 
                     if (seen.has(item.product_id)) {
-
                         // reset duplicate
                         item.product_id = ""
-
                         // show message only once
                         if (!isShowingDuplicate) {
                             notify({
@@ -364,6 +377,7 @@ export default {
                 isLoading.value = true
 
                 const data: any = {
+                    _id: props.updateData?._id,
                     supplier_id: supplierName.value,
                     purchase_date: purchaseDate.value,
                     items: items.value,
@@ -373,17 +387,29 @@ export default {
                     discount: discount.value,
                     payment: payment.value,
                     payment_type_id: paymentTypeName.value,
-                    notes: notes.value
+                    notes: notes.value,
+                    status: isCancel.value || props.updateData.status
                 }
 
-                console.log("Data is", data)
-                const res: any = await purchase.createData(data)
-                await props.loadData()
+                if (props.updateData) {
+                    const res: any = await purchase.updateData(data)
+                    await props.loadData()
+                    notify({
+                        message: res?.message || "Purchase updated successfully",
+                        type: "success"
+                    })
+                }
+                else {
+                    console.log("Data is", data)
+                    const res: any = await purchase.createData(data)
+                    await props.loadData()
 
-                notify({
-                    message: res?.message || "Purchase created successfully",
-                    type: "success"
-                })
+                    notify({
+                        message: res?.message || "Purchase created successfully",
+                        type: "success"
+                    })
+                }
+
 
                 handleClose()
 
@@ -403,8 +429,6 @@ export default {
         const handleClose = () => {
             emit("close")
         }
-
-
 
 
         return {
@@ -428,7 +452,9 @@ export default {
             tax,
             discount,
             payment,
-            remainingAmount
+            remainingAmount,
+            isCancel,
+            statusOpt
 
         }
     }

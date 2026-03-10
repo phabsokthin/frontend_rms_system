@@ -131,9 +131,11 @@
                                     e.stopPropagation();
                                     hanldeUpdateStatus(data._id);
                                 }" v-if="data.status === 'pending'"
-                                    class="p-1 text-xs text-orange-500 rounded-md bg-orange-50">កំពុងរង់ចាំ</span>
+                                    class="p-1 text-xs text-orange-500 bg-orange-100 rounded-md">កំពុងរង់ចាំ</span>
                                 <span v-if="data.status === 'received'"
-                                    class="p-1 text-xs text-green-500 rounded-md bg-green-50">បានទទួល</span>
+                                    class="p-1 text-xs text-green-500 bg-green-100 rounded-md">បានទទួល</span>
+                                       <span v-if="data.status === 'cancelled'"
+                                    class="p-1 text-xs text-yellow-500 bg-yellow-100 rounded-md">បោះបង់</span>
                             </td>
 
                             <!-- Actions -->
@@ -145,15 +147,12 @@
                                 }" class="text-xs rounded-none font-bayon">
                                     មើល
                                 </Button>
-                                <Button variant="blue" @click="(e: MouseEvent) => {
+                                <Button :disabled="data.status==='cancelled'" variant="blue" @click="(e: MouseEvent) => {
                                     e.stopPropagation();
-                                    handleViewPurchase(data);
+                                    handleUpdatePopup(data);
                                 }" class="text-xs rounded-none font-bayon">
                                     កែប្រែ
                                 </Button>
-
-
-
 
                                 <Button variant="red" @click="(e: MouseEvent) => {
                                     e.stopPropagation();
@@ -313,7 +312,7 @@ export default {
         const handleUpdatePopup = (data: any) => {
             currentComponent.value = "PurchaseForm"
             updateData.value = data
-            console.log(updateData.value)
+            // console.log(updateData.value)
         }
 
         const handleViewPurchase = (data: Purchase) => {
