@@ -5,5 +5,6 @@ export default interface UserAuth {
     email?: string;
     status?: boolean;
     id?: string;
+    role?: string;
 
 }
