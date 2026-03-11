@@ -117,15 +117,40 @@ const router = createRouter({
 });
 
 // route guard or protection route
+// router.beforeEach((to, from, next) => {
+//   const auth = useAuthStore(); // get store
+
+//   if (to.meta.requiresAuth && !auth.isAuthenticated) {
+//     next("/login"); // redirect to login
+//   } else if (to.path === "/login" && auth.isAuthenticated) {
+//     next("/"); // redirect to home
+//   } else {
+//     next(); // allow navigation
+//   }
+// });
+
+
+// route guard or protection route
 router.beforeEach((to, from, next) => {
-  const auth = useAuthStore(); // get store
+  const auth = useAuthStore(); 
+  const user = auth.getUser;
 
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    next("/login"); // redirect to login
+    next("/login"); 
   } else if (to.path === "/login" && auth.isAuthenticated) {
-    next("/"); // redirect to home
+    next("/"); 
+  } else if (user?.role === "kitchen") {
+    // restrict kitchen role
+    const allowedRoutes = ["Home", "Table", "SellList"]; // allow Home and Table
+    if (!allowedRoutes.includes(to.name as string)) {
+      next({ name: "Home" }); // redirect to Home if trying to access disallowed route
+    } else {
+      next(); // allow Home or Table
+    }
   } else {
-    next(); // allow navigation
+    next(); // allow navigation for other roles
   }
 });
+
+
 export default router;

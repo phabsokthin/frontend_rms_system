@@ -29,18 +29,22 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { faHome, faChartPie, faTable, faStaffAesculapius, faUsers, faFolderBlank, faBank, faUsersBetweenLines, faHandHolding, faBox, faShop, faShoppingBag, faFileInvoice, faFileInvoiceDollar, faNewspaper } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faChartPie, faTable, faUsers, faBank, faUsersBetweenLines, faShop, faShoppingBag, faFileInvoiceDollar, faNewspaper } from '@fortawesome/free-solid-svg-icons'
 import { faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons/faHandHoldingDollar';
 import { faBoxArchive } from '@fortawesome/free-solid-svg-icons/faBoxArchive';
+import { useAuthStore } from '../../stores/auth.store';
 
 const props = defineProps<{ isOpen: boolean }>()
 
 const route = useRoute()
 
+
+const auth = useAuthStore()
+const user = auth.getUser
+
 // Use named routes for comparison
 const isActive = (name: string) => route.name === name
-
-const menuItems = [
+const allMenuItems = [
   { name: 'Home', label: 'ទំព័រដើម', icon: faHome },
   { name: 'Category', label: 'ប្រភេទ', icon: faChartPie },
   { name: 'Table', label: 'បញ្ជីលេខតុ', icon: faTable },
@@ -52,8 +56,13 @@ const menuItems = [
   { name: 'Sell', label: 'បញ្ជីផ្ទាំងលក់', icon: faShop },
   { name: 'Purchase', label: 'ទិញផលិតផលចូល', icon: faShoppingBag },
   { name: 'Expense', label: 'ការចំណាយ', icon: faFileInvoiceDollar },
-    { name: 'Test', label: 'របាយការណ៍', icon: faNewspaper },
+  { name: 'Test', label: 'របាយការណ៍', icon: faNewspaper },
 ]
+
+// Filter menu items based on role
+const menuItems = user?.role === 'kitchen'
+  ? allMenuItems.filter(item => item.name === 'Home')
+  : allMenuItems
 </script>
 
 <style scoped>

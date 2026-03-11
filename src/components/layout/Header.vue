@@ -21,7 +21,7 @@
         </div>
         <span class="font-bayon">លេខតុ</span>
       </router-link>
-      <router-link to="/sell"
+      <router-link to="/sell" v-if="user.role !== 'kitchen'"
         class="flex items-center gap-2 p-1 border border-green-600 rounded-md cursor-pointer hover:bg-green-700">
         <div class="p-2 bg-green-600 rounded-full cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -59,7 +59,7 @@
         <span class="absolute p-1 text-xs font-bold text-white bg-orange-500 rounded-full shadow -right-1 -top-0.5">{{
           pendingCount }}</span>
       </router-link>
-      <router-link to="/sell"
+      <router-link to="/sell" 
         class="flex items-center gap-2 p-1 border border-green-600 rounded-md cursor-pointer hover:bg-green-700">
         <div class="p-2 bg-green-600 rounded-full cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"

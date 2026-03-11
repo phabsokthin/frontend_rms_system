@@ -7,8 +7,8 @@
                 <div class="flex gap-2">
                     <TextFieldInput v-model="searchTerm" placeholder="ស្វែងរក / លេខវិកយ្យប័ត្រ / លេខតុ​ / អតិថិជន"
                         class="font-bayon w-[500px]" />
-                    <Button @click="handleCreatePopup" variant="green" class="rounded-none font-bayon">+
-                        បង្កើតថ្មី</Button>
+                    <!-- <Button @click="handleCreatePopup" variant="green" class="rounded-none font-bayon">+
+                        បង្កើតថ្មី</Button> -->
                 </div>
             </div>
 
