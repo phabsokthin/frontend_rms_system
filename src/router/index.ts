@@ -19,7 +19,7 @@ import SellOrder from "../view/sellOrder/SellOrder.vue";
 import Purchase from "../view/purchase/Purchase.vue";
 import Expense from "../view/expense/Expense.vue";
 import SellOrderList from "../view/sellOrder/SellOrderList.vue";
-import Test from "../view/report/Test.vue";
+import AllReport from "../view/report/AllReport.vue";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -98,9 +98,9 @@ const routes: RouteRecordRaw[] = [
         component: Expense,
       },
       {
-        path: "test",
-        name: "Test",
-        component: Test,
+        path: "report",
+        name: "Report",
+        component: AllReport,
       },
     ],
   },

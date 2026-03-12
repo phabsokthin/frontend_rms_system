@@ -24,19 +24,22 @@
                     :disabled="!is_manage_stock" />
 
                 <!-- Cost -->
-                <TextFieldInput v-model.number="cost" type="number" label="ថ្លៃដើម" placeholder="Cost" />
+                <TextFieldInput v-model.number="cost" type="number" label="ថ្លៃដើម" placeholder="Cost" :min="0"/>
 
                 <!-- Price -->
-                <TextFieldInput v-model.number="price" type="number" label="តម្លៃលក់" placeholder="Price" />
+                <TextFieldInput v-model.number="price" type="number" label="តម្លៃលក់" placeholder="Price" :min="0"/>
 
                 <!-- Profit (Auto calculated) -->
-                <TextFieldInput :model-value="profit" label="ចំណេញ" :disabled="true" placeholder="Profit" />
+                <TextFieldInput :model-value="profit" label="ចំណេញ" :disabled="true" placeholder="Profit"  />
 
                 <!-- Manage Stock -->
                 <Select v-model="is_manage_stock" :options="manageStockOptions" label="គ្រប់គ្រងស្តុក" />
 
                 <!-- Status -->
                 <Select v-model="status" :options="statusOptions" label="ស្ថានភាព" />
+                <div v-if="is_manage_stock">
+                    <TextFieldInput v-model.number="alert_stock" type="number" label="ជូនដំណឹង" placeholder="Price" :min="0"/>
+                </div>
 
                 <!-- Description (Full Width) -->
                 <div class="col-span-2">
@@ -57,12 +60,12 @@
                     </div>
 
                     <!-- Existing image if no new upload -->
-                    <div v-else-if="image_url" class="mt-2">
+                    <!-- <div v-else-if="image_url" class="mt-2">
                         <img :src="localServer + image_url" class="object-cover w-32 h-32 border rounded" />
                         <button type="button" @click="handleRemoveExistingImage" class="mt-2 text-sm text-red-500">
                             លុបរូបភាព
                         </button>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Buttons -->
@@ -106,6 +109,7 @@ export default {
         const cost = ref(0)
         const qty = ref(0)
         const is_manage_stock = ref(true)
+        const alert_stock = ref(0)
         const status = ref(true)
         const image_url = ref<string | null>(props.updateData?.image_url || null)
         const categoryName = ref('')
@@ -155,7 +159,8 @@ export default {
                 price.value = data.price
                 cost.value = data.cost
                 qty.value = data.qty
-                is_manage_stock.value = data.is_manage_stock
+                is_manage_stock.value = data.is_manage_stock,
+                alert_stock.value = data.alert_stock
                 status.value = data.status
                 image_url.value = data.image_url || null
                 categoryName.value = data.category_id?._id || ''
@@ -222,6 +227,7 @@ export default {
                 formData.append('cost', cost.value.toString())
                 formData.append('profit', profit.value.toString())
                 formData.append('qty', qty.value.toString())
+                formData.append('alert_stock', alert_stock.value.toString())
                 formData.append('is_manage_stock', is_manage_stock.value ? 'true' : 'false')
                 formData.append('status', status.value ? 'true' : 'false')
 
@@ -257,7 +263,8 @@ export default {
             isLoading, handleSubmit, handleClose,
             handleImageUpload, handleRemoveNewImage, handleRemoveExistingImage,
             categoryName, imageFile, imagePreview, image_url,
-            currentDataByOption, localServer
+            currentDataByOption, localServer,
+            alert_stock
         }
     }
 }

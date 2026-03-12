@@ -56,7 +56,7 @@ const allMenuItems = [
   { name: 'Sell', label: 'បញ្ជីផ្ទាំងលក់', icon: faShop },
   { name: 'Purchase', label: 'ទិញផលិតផលចូល', icon: faShoppingBag },
   { name: 'Expense', label: 'ការចំណាយ', icon: faFileInvoiceDollar },
-  { name: 'Test', label: 'របាយការណ៍', icon: faNewspaper },
+  { name: 'Report', label: 'របាយការណ៍', icon: faNewspaper },
 ]
 
 // Filter menu items based on role
