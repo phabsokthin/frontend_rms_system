@@ -26,6 +26,7 @@ export default {
             "/sell": "ផ្ទាំងលក់",
             "/purchase": "បញ្ជីទិញផលិតផលចូល",
             "/expense": "ការចំណាយ",
+            "/report": "របាយការណ៍",
         };
 
         const pageTitle = computed(() => titles[route.path] || "");

@@ -13,6 +13,7 @@ export default interface Product {
     profit: number;
     qty: number;
     is_manage_stock: boolean;
+    alert_stock: number
     status: boolean;
     image_url?: string;
     created_at?: Date;
