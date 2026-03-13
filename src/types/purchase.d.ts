@@ -24,6 +24,14 @@ export default interface Purchase {
     }[];
     currency: string;
     total_amount: number;
+    payment_type_id: {
+        _id: string;
+        name: string;
+        status: boolean;
+        description: string;
+        created_at: string;
+        updated_at: string;
+    }
     status: string;
     notes: string;
     created_at: string;

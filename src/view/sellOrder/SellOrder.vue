@@ -75,7 +75,7 @@
 
                     <div class="flex justify-between mt-1 font-bayon">
                         <span class="font-bold text-green-600">
-                            ${{ item.price }}
+                            {{ item.price }}
                         </span>
 
                         <div class="text-xs text-gray-400">
@@ -154,7 +154,6 @@
                         <Button variant="red" @click="removeFromCart(item._id)"
                             class="flex items-center justify-center w-8 h-8 rounded-none font-bayon hover:bg-red-600">
                             <font-awesome-icon :icon="faTimes" class="text-sm text-white cursor-pointer" />
-
                         </Button>
                     </div>
                 </div>
@@ -168,7 +167,7 @@
 
                 <div class="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span>${{ totalPrice }}</span>
+                    <span>{{ totalPrice }}</span>
                 </div>
 
                 <Button @click="handleViewPayment" class="flex w-full mt-3 rounded-none font-bayon" variant="green">

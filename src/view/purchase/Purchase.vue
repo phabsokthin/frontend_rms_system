@@ -26,7 +26,6 @@
                             <th class="px-6 py-3 border">អុីម៉ែល</th>
                             <th class="px-6 py-3 border">កាលបរិច្ឆេតទិញចូល</th>
                             <th class="px-6 py-3 border">ចំនួន</th>
-
                             <th class="px-6 py-3 border">ចំនួនសរុប</th>
                             <th class="px-6 py-3 border">ពន្ធ</th>
                             <th class="px-6 py-3 border">បញ្ចុះតម្លៃ</th>

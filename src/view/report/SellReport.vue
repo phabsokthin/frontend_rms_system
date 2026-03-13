@@ -11,8 +11,9 @@
                         <span class="text-lg text-gray-500">$</span>
                     </p>
                     <p class="mt-1 text-sm text-gray-400">
-                        Orders: {{ reportSummary?.byCurrency?.usd?.totalOrders }} |
-                        Balance: {{ reportSummary?.byCurrency?.usd?.totalBalance }}
+                        Orders: {{ reportSummary?.byCurrency?.usd?.totalOrders }}
+                        បានទូទាត់: {{ reportSummary?.byCurrency?.usd?.totalPayment }}
+                        នៅសល់: {{ reportSummary?.byCurrency?.usd?.totalAmount }}
                     </p>
                 </div>
 
@@ -24,8 +25,9 @@
                         <span class="text-lg text-gray-500">៛</span>
                     </p>
                     <p class="mt-1 text-sm text-gray-400">
-                        Orders: {{ reportSummary?.byCurrency?.khr?.totalOrders }} |
-                        Balance: {{ reportSummary?.byCurrency?.khr?.totalBalance }}
+                        Orders: {{ reportSummary?.byCurrency?.khr?.totalOrders }}
+                        បានទូទាត់: {{ reportSummary?.byCurrency?.khr?.totalPayment }}
+                        នៅសល់: {{ reportSummary?.byCurrency?.khr?.totalAmount }}
                     </p>
                 </div>
             </div>
@@ -36,11 +38,11 @@
             <div class="mb-[15px] flex items-center justify-between">
                 <h1 class="text-xl font-bayon">របាយការណ៍លក់</h1>
                 <div class="flex gap-2">
-                   <div class="flex gap-2">
-                     <DateTime v-model="start_date" label="ចាប់ផ្តើម" type="date" />
-                    <DateTime v-model="end_date" label="បញ្ចប់" type="date" />
-                   
-                   </div>
+                    <div class="flex gap-2">
+                        <DateTime v-model="start_date" label="ចាប់ផ្តើម" type="date" />
+                        <DateTime v-model="end_date" label="បញ្ចប់" type="date" />
+
+                    </div>
 
                     <!-- Category -->
                     <Select v-model="currency" :options="currentDataByOption" label="ប្រភេទ" required
@@ -182,10 +184,7 @@
                             <td class="px-6 py-3 border whitespace-nowrap">
                                 {{ formatDateTime(data.order_time) }}
                             </td>
-
-
                         </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -236,24 +235,24 @@ export default {
         const searchTerm = ref("")
         const showName = ref("")
         const report = ref<SellOrderReport | null>(null)
-      
-// Helper to format date as YYYY-MM-DD
-function formatDate(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
 
-// First day of current month
-const firstDayOfMonth = new Date();
-firstDayOfMonth.setDate(1);
+        // Helper to format date as YYYY-MM-DD
+        function formatDate(date: Date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        }
 
-// Last day of current month
-const lastDayOfMonth = new Date(firstDayOfMonth.getFullYear(), firstDayOfMonth.getMonth() + 1, 0);
+        // First day of current month
+        const firstDayOfMonth = new Date();
+        firstDayOfMonth.setDate(1);
 
-const start_date = ref(formatDate(firstDayOfMonth));
-const end_date = ref(formatDate(lastDayOfMonth));
+        // Last day of current month
+        const lastDayOfMonth = new Date(firstDayOfMonth.getFullYear(), firstDayOfMonth.getMonth() + 1, 0);
+
+        const start_date = ref(formatDate(firstDayOfMonth));
+        const end_date = ref(formatDate(lastDayOfMonth));
 
 
 
