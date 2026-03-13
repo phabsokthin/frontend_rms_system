@@ -56,7 +56,7 @@
         </div>
 
         <span class="font-bayon">បញ្ជីលក់ </span>
-        <span class="absolute p-1 text-xs font-bold text-white bg-orange-500 rounded-full shadow -right-1 -top-0.5">{{
+        <span class="absolute text-xs px-1 font-bold text-white bg-orange-500 rounded-full shadow -right-1 -top-0.5">{{
           pendingCount }}</span>
       </router-link>
       <router-link to="/sell" 

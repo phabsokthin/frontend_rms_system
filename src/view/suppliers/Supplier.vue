@@ -70,15 +70,17 @@
                                 {{ data.phone }}
                             </td>
 
- <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.address }}
-                            </td>
-
-                            <!-- Email -->
+                               <!-- Email -->
                             <td class="px-6 py-3 border whitespace-nowrap">
                                 {{ data.email }}
                             </td>
 
+
+ <td class="px-6 py-3 border whitespace-nowrap">
+                                {{ data.address }}
+                            </td>
+
+                         
                             <!-- Status -->
                             <td class="px-6 py-3 border whitespace-nowrap font-bayon">
                                 <span :class="data.status

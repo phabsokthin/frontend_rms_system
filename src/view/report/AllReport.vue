@@ -31,10 +31,10 @@
                 <SellReport/>
             </div>
             <div v-else-if="activeTab === 'purchase'">
-                <p>🛒 របាយការណ៍ទិញចូល</p>
+                <PurchaseReport/>
             </div>
             <div v-else-if="activeTab === 'profit'">
-                <p>📊 របាយការណ៍ចំណេញខាត</p>
+                <ProfitAndLoseReport/>
             </div>
             <div v-else-if="activeTab === 'bestseller'">
                 <p>⭐ របាយការណ៍ផលិតលក់ដាច់</p>
@@ -48,9 +48,11 @@
 import { ref } from 'vue'
 import ProductReport from './ProductReport.vue';
 import SellReport from './SellReport.vue';
+import PurchaseReport from './PurchaseReport.vue';
+import ProfitAndLoseReport from './ProfitAndLoseReport.vue';
 
 export default {
-    components: { ProductReport,SellReport },
+    components: { ProductReport,SellReport,PurchaseReport,ProfitAndLoseReport},
     setup() {
         
         const tabs = [
