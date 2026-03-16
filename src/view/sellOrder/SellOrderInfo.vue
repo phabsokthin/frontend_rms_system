@@ -83,7 +83,7 @@
                         <div class="flex justify-end mt-2">
                             <div class="w-[200px] p-5 bg-gray-50 border">
                                 <label class="block text-gray-500 font-bayon">ទូទាត់</label>
-                                <div class="mt-1 text-xl text-center font-bayon">{{ remainingAmountDisplay }}</div>
+                                <div class="mt-1 text-xl text-center">{{ remainingAmountDisplay }}</div>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                         បិទ
                     </Button>
                     <Button :loading="isLoading" type="submit" variant="green"
-                        class="gap-2 text-center rounded-none font-bayon">
+                        class="gap-2 text-center rounded-none ">
                         <div class="flex gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

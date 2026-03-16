@@ -3,9 +3,9 @@
         <div class="px-4">
             <!-- Header -->
             <div class="mb-[15px] flex items-center justify-between">
-                <h1 class="text-xl font-bayon">បញ្ជីផលិតផល</h1>
+                <h1 class="text-xl font-bayon">បញ្ជីអ្នកប្រើប្រាស់</h1>
                 <div class="flex gap-2">
-                    <TextFieldInput v-model="searchTerm" placeholder="ស្វែងរកផលិតផល" class="font-bayon" />
+                    <TextFieldInput v-model="searchTerm" placeholder="ស្វែងរកបុគ្គលិក" class="font-bayon" />
                     <Button @click="handleCreatePopup" variant="green" class="rounded-none font-bayon">+
                         បង្កើតថ្មី</Button>
                 </div>
@@ -14,28 +14,24 @@
             <!-- Table -->
 
             <div class="overflow-x-auto bg-white border border-gray-200 ">
-                <table class="min-w-[1300px] w-full border-collapse">
+                <table class="min-w-[1100px] w-full border-collapse">
 
                     <!-- ================= HEADER ================= -->
                     <thead>
                         <tr class="text-white bg-green-700 text-md font-bayon">
                             <th class="px-6 py-3 border">ល.រ</th>
-                            <th class="px-6 py-3 border">ឈ្មោះផលិតផល</th>
-                            <th class="px-6 py-3 border">ប្រភេទ</th>
-                            <th class="px-6 py-3 border">កូដ</th>
-                            <th class="px-6 py-3 border">តម្លៃលក់</th>
-                            <th class="px-6 py-3 border">តម្លៃដើម</th>
-                            <th class="px-6 py-3 border">ប្រាក់ចំណេញ</th>
-                            <th class="px-6 py-3 border">ចំនួន</th>
-                            <th class="px-6 py-3 border">ប្រភេទស្តុក</th>
+                            <th class="px-6 py-3 border">ឈ្មោះ</th>
+                            <th class="px-6 py-3 border">អុីម៉ែល</th>
+                            <th class="px-6 py-3 border">តួនាទី</th>
                             <th class="px-6 py-3 border">ស្ថានភាព</th>
-                            <th class="px-6 py-3 border">រូបភាព</th>
-                            <th class="px-3 py-3 text-center border">សកម្មភាព</th>
+                            <th class="px-6 py-3 text-center border">សកម្មភាព</th>
                         </tr>
                     </thead>
 
                     <!-- ================= BODY ================= -->
                     <tbody class="bg-white border-b-color ">
+
+
                         <tr v-if="isLoading">
                             <td colspan="13" class="py-6 text-center">
                                 <Loading />
@@ -52,63 +48,32 @@
 
                         <tr v-else v-for="(data, index) in paginatedData" :key="data._id"
                             class="transition-colors duration-150 hover:bg-gray-50">
+
+                            <!-- Index -->
                             <td class="px-6 py-3 text-gray-900 border whitespace-nowrap">
                                 {{ index + 1 + (currentPage - 1) * itemsPerPage }}
                             </td>
 
-
+                            <!-- First Name -->
                             <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.name }}
+                                {{ data.username }}
                             </td>
 
 
+
+                            <!-- Email -->
                             <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.category_id?.name }}
+                                {{ data.email }}
                             </td>
 
-
-                            <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.code }}
-                            </td>
-
-
-
-                            <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.price }}
-                            </td>
-
-
-                            <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.cost }}
-                            </td>
-
-
-                            <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.profit }}
-                            </td>
-
-
-                            <td class="px-6 py-3 border whitespace-nowrap">
-
-                                <div>
-                                    <div v-if="data.is_manage_stock && data.qty === 0">
-                                        <span
-                                            class="p-1 text-sm text-red-500 bg-red-100 rounded-md font-bayon">អស់ស្តុក</span>
-                                    </div>
-                                    <span v-else>{{ data.qty }} {{ data.unit }}</span>
-                                </div>
-                            </td>
-
-
-                            <td class="px-6 py-3 text-sm border whitespace-nowrap font-bayon">
-                                <span v-if="data.is_manage_stock === false" class="text-red-600">មិនគ្រប់គ្រងស្តុក</span>
-                                <span v-else class="text-green-600">គ្រប់គ្រងស្តុក</span>
-
-                             
+                            <!-- Status -->
+                            <td class="px-6 py-3 border whitespace-nowrap font-bayon">
+                                <span>{{ data.role }}</span>
                             </td>
 
 
 
+                            <!-- Status -->
                             <td class="px-6 py-3 border whitespace-nowrap font-bayon">
                                 <span :class="data.status
                                     ? 'text-green-600 font-semibold'
@@ -117,24 +82,21 @@
                                 </span>
                             </td>
 
+                            <td class="px-6 py-3 space-x-3 text-center border whitespace-nowrap">
+                                <!-- Edit button -->
+                                <font-awesome-icon :icon="faEdit"
+                                    @click="data._id !== getUserLocalObj.id ? handleUpdatePopup(data) : null" :class="[
+                                        'text-xl cursor-pointer hover:text-blue-700',
+                                        data._id === getUserLocalObj.id ? 'text-gray-400 cursor-not-allowed hover:text-gray-400' : 'text-blue-600'
+                                    ]" />
 
-                            <td class="px-6 py-3 border whitespace-nowrap">
-                                <img v-if="data.image_url" :src="localServer + data.image_url"
-                                    class="object-cover w-16 h-16 border rounded" />
-
-                                <span v-else class="text-sm text-gray-400">
-                                    <img src="https://bunchobagels.com/wp-content/uploads/2024/09/placeholder.jpg"
-                                        class="w-20" alt="">
-                                </span>
-
-
-                            </td>
-                            <!-- Actions -->
-                            <td class="py-3 text-center border whitespace-nowrap">
-                                <font-awesome-icon :icon="faEdit" @click="handleUpdatePopup(data)"
-                                    class="text-xl text-blue-600 cursor-pointer hover:text-blue-700" />
-                                <font-awesome-icon :icon="faTrash" @click="handleDeletePopup(data._id, data.name)"
-                                    class="text-xl text-red-600 cursor-pointer hover:text-red-700" />
+                                <!-- Delete button -->
+                                <font-awesome-icon :icon="faTrash"
+                                    @click="data._id !== getUserLocalObj.id ? handleDeletePopup(data._id, data.username as string) : null"
+                                    :class="[
+                                        'text-xl cursor-pointer hover:text-red-700',
+                                        data._id === getUserLocalObj.id ? 'text-gray-400 cursor-not-allowed hover:text-gray-400' : 'text-red-600'
+                                    ]" />
                             </td>
 
                         </tr>
@@ -143,10 +105,9 @@
                 </table>
             </div>
 
+
             <!-- Pagination -->
             <div class="flex items-center justify-between mt-3">
-                <!-- Optional: CustomSelect for items per page -->
-                <!-- <CustomSelect v-model="itemsPerPage" :options="selectLimit" label="បង្ហាញ" placeholder="Select one" /> -->
 
                 <Pagination :current-page="currentPage" :total-pages="totalPages" :total-items="currentData.length"
                     :items-per-page="itemsPerPage" :on-page-change="handlePageChange" />
@@ -155,7 +116,7 @@
 
             <DeletePopup v-model="showDelete" :name="showName" @confirm="handleDelete" />
         </div>
-
+        <!-- <pre>{{ paginatedData }}</pre> -->
 
         <div>
             <component :is="currentComponent" @close="currentComponent = ''" :loadData="loadData"
@@ -174,20 +135,20 @@ import Loading from '../../components/ui/Loading.vue';
 import DeletePopup from '../../components/ui/DeletePopup.vue';
 import TextFieldInput from '../../components/ui/TextFieldInput.vue';
 import { useNotification } from '../../composables/useNotification';
-
-import Product from '../../types/product';
-import { producStore } from '../../stores/product.store';
-import { localServer } from '../../../server/localServer';
-import ProductForm from './ProductForm.vue';
+import { staffStore } from '../../stores/staff.store';
+import Staff from '../../types/staff';
+import UserAuth from '../../types/auth';
+import { useAuthStore } from '../../stores/auth.store';
+import UserForm from './UserForm.vue';
 
 
 
 
 export default {
-    components: { Button, Pagination, Loading, DeletePopup, TextFieldInput, ProductForm },
+    components: { Button, Pagination, Loading, DeletePopup, TextFieldInput,UserForm },
     setup() {
-        const product = producStore();
-        const currentData = ref<Product[]>([]);
+        const userAuth = useAuthStore()
+        const currentData = ref<UserAuth[]>([]);
         const currentPage = ref(1);
         const itemsPerPage = ref(10);
         const showDelete = ref(false)
@@ -195,18 +156,22 @@ export default {
         const searchTerm = ref("")
         const showName = ref("")
         const setId = ref("")
-
+        const getUser = ref<UserAuth | null>(null);
         const { notify } = useNotification()
-
         const currentComponent = ref("")
         const updateData = ref("")
+        const getUserLocal = localStorage.getItem("user")
+        const getUserLocalObj = ref(JSON.parse(getUserLocal as any) || null)
 
         // Fetch data
         onMounted(async () => {
             isLoading.value = true
             try {
-                await product.fetchDta();
-                currentData.value = product.getProduct;
+                await userAuth.fetchAllUser();
+                currentData.value = userAuth.getAllUser;
+
+
+                // console.log("userData", currentData.value)
             } catch (err) {
                 console.log(err);
             }
@@ -215,17 +180,28 @@ export default {
             }
         });
 
-        // Filtered data based on searchTerm
-        const filteredData = computed(() => {
-            if (!searchTerm.value) return currentData.value;
 
-            const term = searchTerm.value.toLowerCase();
-            return currentData.value.filter(
-                (item) =>
-                    item.name.toLowerCase().includes(term) ||
-                    (item.category_id?.name && item.code.toLowerCase().includes(term))
-            );
+        const filteredData = computed(() => {
+
+            const data = Array.isArray(currentData.value)
+                ? currentData.value
+                : []
+
+            if (!searchTerm.value) {
+                return data
+            }
+
+            const term = searchTerm.value.toLowerCase()
+
+            return data.filter((item: any) =>
+                item.username?.toLowerCase().includes(term) ||
+                item.email?.toLowerCase().includes(term) ||
+                item.role?.toLowerCase().includes(term)
+            )
         })
+
+
+
         // Paginated data
         const paginatedData = computed(() => {
             const start = (currentPage.value - 1) * itemsPerPage.value;
@@ -250,7 +226,7 @@ export default {
 
         // handle create popup
         const handleCreatePopup = () => {
-            currentComponent.value = "ProductForm"
+            currentComponent.value = "UserForm"
             updateData.value = ""
         }
 
@@ -264,14 +240,15 @@ export default {
         const handleDelete = async () => {
             try {
 
-                const res = await product.deleteData(setId.value)
+                const res = await userAuth.deleteData(setId.value)
                 //real-time 
-                await product.fetchDta();
-                currentData.value = product.getProduct;
+                await userAuth.fetchAllUser();
+                currentData.value = userAuth.getAllUser;
                 notify({
                     message: res.message,
                     type: "success",
                 })
+                
             } catch (error: any) {
 
                 const message =
@@ -284,15 +261,15 @@ export default {
         }
 
         const handleUpdatePopup = (data: any) => {
-            currentComponent.value = "ProductForm"
+            currentComponent.value = "UserForm"
             updateData.value = data
             console.log(updateData.value)
         }
 
         // loadData
         async function loadData() {
-            await product.fetchDta();
-            currentData.value = product.getProduct;
+            await userAuth.fetchAllUser();
+            currentData.value = userAuth.getAllUser;
         }
 
 
@@ -316,7 +293,9 @@ export default {
             loadData,
             handleUpdatePopup,
             updateData,
-            localServer
+
+            getUserLocal,
+            getUserLocalObj
         };
     },
 };

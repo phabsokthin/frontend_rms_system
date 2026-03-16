@@ -4,6 +4,7 @@ import type Product from "../types/product";
 import type ProfitAndLoss from "../types/profitAndLose";
 import type Purchase from "../types/purchase";
 import type SellOrderReport from "../types/sellReport";
+import type { TopSellingProduct } from "../types/topSellingProduct";
 
 
 //sell order response
@@ -73,10 +74,22 @@ export default {
     return response.data; // keep both data and report
   },
 
-  // profit and lose report
-  async getProfitAndLoseReport(): Promise<ProfitAndLoss> {
-    const response = await api.get(`${API_URL}report/profitAndlose-report`);
-    return response.data; // keep both data and report
+// Define the function with optional start/end dates
+async getProfitAndLoseReport(start?: string, end?: string): Promise<ProfitAndLoss> {
+  // Build query params
+  const params: Record<string, string> = {};
+  if (start) params.start = start; // e.g., "2026-03-01"
+  if (end) params.end = end;     // e.g., "2026-03-15"
+
+  const response = await api.get(`${API_URL}report/profitAndlose-report`, { params });
+  return response.data; // returns { report, sellOrders, expenses, customers }
+},
+
+  // top selling product
+  async getTopSellingProducts(): Promise<TopSellingProduct[]> {
+    const response = await api.get(`${API_URL}report/top-selling-product`);
+    return response.data;
   },
+
 
 };

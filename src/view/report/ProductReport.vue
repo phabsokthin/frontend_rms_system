@@ -98,7 +98,7 @@
                                         <span
                                             class="p-1 text-sm text-red-500 bg-red-100 rounded-md font-bayon">អស់ស្តុក</span>
                                     </div>
-                                    <span v-else>សល់ {{ data.qty }}</span>
+                                    <span v-else>សល់ {{ data.qty }} {{ data.unit }}</span>
                                 </div>
                             </td>
 

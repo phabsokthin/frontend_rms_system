@@ -31,7 +31,7 @@ export const reportStore = defineStore("report", {
     async fetchSellOrderReport() {
       try {
         const data = await reportService.getSellOrderReport();
-        this.setData(data);
+        this.setData(data as any);
       } catch (error) {
         handleApiError(error, "Failed to fetch all report");
       }
