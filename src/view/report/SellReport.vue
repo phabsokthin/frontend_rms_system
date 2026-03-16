@@ -12,8 +12,8 @@
                     </p>
                     <p class="mt-1 text-sm text-gray-400">
                         Orders: {{ reportSummary?.byCurrency?.usd?.totalOrders }}
-                        បានទូទាត់: {{ reportSummary?.byCurrency?.usd?.totalPayment }}
-                        នៅសល់: {{ reportSummary?.byCurrency?.usd?.totalAmount }}
+                        <span class="font-bayon">បានទូទាត់</span>: {{ reportSummary?.byCurrency?.usd?.totalPayment }}
+                        <span class="font-bayon">នៅសល់</span>: {{ reportSummary?.byCurrency?.usd?.totalAmount }}
                     </p>
                 </div>
 
@@ -26,8 +26,8 @@
                     </p>
                     <p class="mt-1 text-sm text-gray-400">
                         Orders: {{ reportSummary?.byCurrency?.khr?.totalOrders }}
-                        បានទូទាត់: {{ reportSummary?.byCurrency?.khr?.totalPayment }}
-                        នៅសល់: {{ reportSummary?.byCurrency?.khr?.totalAmount }}
+                        <span class="font-bayon">បានទូទាត់</span>: {{ reportSummary?.byCurrency?.khr?.totalPayment }}
+                        <span class="font-bayon">នៅសល់</span>: {{ reportSummary?.byCurrency?.khr?.totalAmount }}
                     </p>
                 </div>
             </div>

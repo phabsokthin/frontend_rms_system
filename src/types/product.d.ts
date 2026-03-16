@@ -15,6 +15,7 @@ export default interface Product {
     is_manage_stock: boolean;
     alert_stock: number
     status: boolean;
+    unit: string;
     image_url?: string;
     created_at?: Date;
     updated_at?: Date;

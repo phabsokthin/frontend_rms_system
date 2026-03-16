@@ -37,7 +37,7 @@
                 <ProfitAndLoseReport/>
             </div>
             <div v-else-if="activeTab === 'bestseller'">
-                <p>⭐ របាយការណ៍ផលិតលក់ដាច់</p>
+                <TopSellingProduct/>
             </div>
         </div>
       </div>
@@ -50,9 +50,10 @@ import ProductReport from './ProductReport.vue';
 import SellReport from './SellReport.vue';
 import PurchaseReport from './PurchaseReport.vue';
 import ProfitAndLoseReport from './ProfitAndLoseReport.vue';
+import TopSellingProduct from './TopSellingProduct.vue';
 
 export default {
-    components: { ProductReport,SellReport,PurchaseReport,ProfitAndLoseReport},
+    components: { ProductReport,SellReport,PurchaseReport,ProfitAndLoseReport,TopSellingProduct},
     setup() {
         
         const tabs = [

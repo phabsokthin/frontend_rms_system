@@ -80,9 +80,10 @@
                             </td>
 
                             <!-- Gender -->
-                            <td class="px-6 py-3 capitalize border whitespace-nowrap font-bayon">
+                            <td class="px-6 py-3 border whitespace-nowrap font-bayon">
                                 <!-- {{ data.gender }} -->
                                 {{ formatDate(data.purchase_date) }}
+                        
                             </td>
 
                             <!-- Email -->

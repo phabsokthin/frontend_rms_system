@@ -19,18 +19,20 @@
                 <Select v-model="categoryName" :options="currentDataByOption" label="ប្រភេទ" required
                     placeholder="ជ្រើសរើសប្រភេទ" />
 
+                                    <TextFieldInput v-model="unit" label="ឯកតា" required placeholder="Unit" type="text" />
+
                 <!-- Quantity -->
                 <TextFieldInput v-model.number="qty" type="number" label="ចំនួន" placeholder="Qty"
                     :disabled="!is_manage_stock" />
 
                 <!-- Cost -->
-                <TextFieldInput v-model.number="cost" type="number" label="ថ្លៃដើម" placeholder="Cost" :min="0"/>
+                <TextFieldInput v-model.number="cost" type="number" label="ថ្លៃដើម" placeholder="Cost" :min="0" />
 
                 <!-- Price -->
-                <TextFieldInput v-model.number="price" type="number" label="តម្លៃលក់" placeholder="Price" :min="0"/>
+                <TextFieldInput v-model.number="price" type="number" label="តម្លៃលក់" placeholder="Price" :min="0" />
 
                 <!-- Profit (Auto calculated) -->
-                <TextFieldInput :model-value="profit" label="ចំណេញ" :disabled="true" placeholder="Profit"  />
+                <TextFieldInput :model-value="profit" label="ចំណេញ" :disabled="true" placeholder="Profit" />
 
                 <!-- Manage Stock -->
                 <Select v-model="is_manage_stock" :options="manageStockOptions" label="គ្រប់គ្រងស្តុក" />
@@ -38,13 +40,17 @@
                 <!-- Status -->
                 <Select v-model="status" :options="statusOptions" label="ស្ថានភាព" />
                 <div v-if="is_manage_stock">
-                    <TextFieldInput v-model.number="alert_stock" type="number" label="ជូនដំណឹង" placeholder="Price" :min="0"/>
+                    <TextFieldInput v-model.number="alert_stock" type="number" label="ជូនដំណឹង" placeholder="Price"
+                        :min="0" />
                 </div>
+
+
 
                 <!-- Description (Full Width) -->
                 <div class="col-span-2">
                     <TextAreaInput v-model="description" label="ពិពណ៌នា" placeholder="Description" />
                 </div>
+
 
                 <!-- Image -->
                 <div class="col-span-2 space-y-3">
@@ -113,6 +119,7 @@ export default {
         const status = ref(true)
         const image_url = ref<string | null>(props.updateData?.image_url || null)
         const categoryName = ref('')
+        const unit = ref('')
 
         const currentDataByOption = ref<{ label: string; value: string }[]>([])
         const category = categoryStore()
@@ -122,6 +129,7 @@ export default {
 
         const imageFile = ref<File | null>(null)
         const imagePreview = ref<string | null>(null)
+            
 
         const statusOptions = [
             { label: 'សកម្ម', value: true },
@@ -159,8 +167,9 @@ export default {
                 price.value = data.price
                 cost.value = data.cost
                 qty.value = data.qty
+                unit.value = data.unit
                 is_manage_stock.value = data.is_manage_stock,
-                alert_stock.value = data.alert_stock
+                    alert_stock.value = data.alert_stock
                 status.value = data.status
                 image_url.value = data.image_url || null
                 categoryName.value = data.category_id?._id || ''
@@ -228,6 +237,7 @@ export default {
                 formData.append('profit', profit.value.toString())
                 formData.append('qty', qty.value.toString())
                 formData.append('alert_stock', alert_stock.value.toString())
+                formData.append('unit', unit.value)
                 formData.append('is_manage_stock', is_manage_stock.value ? 'true' : 'false')
                 formData.append('status', status.value ? 'true' : 'false')
 
@@ -264,7 +274,8 @@ export default {
             handleImageUpload, handleRemoveNewImage, handleRemoveExistingImage,
             categoryName, imageFile, imagePreview, image_url,
             currentDataByOption, localServer,
-            alert_stock
+            alert_stock,
+            unit
         }
     }
 }

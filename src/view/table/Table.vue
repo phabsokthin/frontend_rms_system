@@ -24,6 +24,12 @@
                     : 'bg-red-50 border-red-500'
             ]">
                 <div>
+                    <div class="flex justify-center">
+                           <div class="p-4 mb-3 border rounded-md bg-gray-50">
+                            <img src="../../assets/restaurant-table-and-chairs-svgrepo-com (1).svg" alt=""
+                                    class="w-10 mb-1" />
+                           </div>
+                    </div>
                     <h2 class="mb-2 text-xl font-semibold underline"><span class="font-bayon">លេខ</span>{{
                         table.table_number }}</h2>
                     <p class="font-bayon">សមត្ថភាព: {{ table.capacity }}</p>

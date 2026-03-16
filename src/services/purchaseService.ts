@@ -30,6 +30,7 @@ export default {
     return response.data;
   },
 
+  
   // update
   async update(data: Purchase): Promise<Purchase> {
     if (!data._id) {

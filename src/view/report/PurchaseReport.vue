@@ -13,9 +13,9 @@
                         </span>
                     </div>
                     <p class="mt-1 text-gray-700 text-md">
-                        ទិញចូល: {{ reportSummary?.byCurrency?.usd?.totalOrders }} |
-                        បានទូទាត់: {{ reportSummary?.byCurrency?.usd?.totalPayment }} $ |
-                        នៅសល់: {{ reportSummary?.byCurrency?.usd?.totalBalance }} $
+                        <span class="font-bayon">ទិញចូល</span>: {{ reportSummary?.byCurrency?.usd?.totalOrders }} |
+                        <span class="font-bayon">បានទូទាត់</span>: {{ reportSummary?.byCurrency?.usd?.totalPayment }} $ |
+                        <span class="font-bayon">នៅសល់</span>: {{ reportSummary?.byCurrency?.usd?.totalBalance }} $
                     </p>
                 </li>
 
@@ -29,9 +29,9 @@
                         </span>
                     </div>
                     <p class="mt-1 text-gray-700 text-md">
-                        ទិញចូល: {{ reportSummary?.byCurrency?.khr?.totalOrders }} |
-                        បានទូទាត់: {{ reportSummary?.byCurrency?.khr?.totalPayment }} ៛ |
-                        នៅសល់: {{ reportSummary?.byCurrency?.khr?.totalBalance }} ៛
+                        <span class="font-bayon">ទិញចូល</span>: {{ reportSummary?.byCurrency?.khr?.totalOrders }} |
+                        <span class="font-bayon">បានទូទាត់</span>: {{ reportSummary?.byCurrency?.khr?.totalPayment }} ៛ |
+                        <span class="font-bayon">នៅសល់</span>: {{ reportSummary?.byCurrency?.khr?.totalBalance }} ៛
                     </p>
                 </li>
             </ul>
@@ -106,7 +106,7 @@
                             </td>
 
                             <!-- First Name -->
-                            <td class="px-6 py-3 border whitespace-nowrap">
+                            <td class="px-6 py-3 border whitespace-nowrap font-bayon">
                                 {{ data?.supplier_id?.name }}
                             </td>
 

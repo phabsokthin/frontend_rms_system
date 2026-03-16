@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen">
-        <div>
+        <div class="px-4">
             <!-- Header -->
             <div class="mb-[15px] flex items-center justify-between">
                 <h1 class="text-xl font-bayon">បញ្ជីប្រភេទផលិតផល</h1>
@@ -17,7 +17,7 @@
                     <thead class="bg-gray-100">
                         <tr class="text-white bg-green-700 text-md font-bayon">
                             <th scope="col"
-                                class="px-6 py-3 text-left uppercase w-[50px] arrow-active border border-t border-r border-b border-white border-l-0">
+                                class="px-6 py-3 text-left uppercase w-[50px] border border-t border-r border-b border-white border-l-0">
                                 ល.រ
                             </th>
                             <th scope="col"
@@ -58,10 +58,10 @@
                                 <td class="px-6 py-3 text-gray-900 border border-gray-200 text-md whitespace-nowrap">
                                     {{ index + 1 + (currentPage - 1) * itemsPerPage }}
                                 </td>
-                                <td class="px-6 py-3 text-gray-900 border border-gray-200 text-md whitespace-nowrap">
+                                <td class="px-6 py-3 text-gray-900 border border-gray-200 text-md whitespace-nowrap font-bayon">
                                     {{ data.name }}
                                 </td>
-                                <td class="px-6 py-3 text-gray-900 border border-gray-200 text-md whitespace-nowrap">
+                                <td class="px-6 py-3 text-gray-900 border border-gray-200 text-md whitespace-nowrap font-bayon">
                                     {{ data.description }}
                                 </td>
                                 <td
