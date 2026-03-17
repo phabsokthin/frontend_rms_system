@@ -1,17 +1,12 @@
 <template>
-  <aside
-    :class="[
-      'flex flex-col h-screen text-white bg-green-800 shadow-lg transition-all duration-300',
-      isOpen ? 'w-72' : 'w-16'
-    ]"
-  >
+  <aside :class="[
+    'flex flex-col h-screen text-white bg-green-800 shadow-lg transition-all duration-300',
+    isOpen ? 'w-72' : 'w-16'
+  ]">
     <!-- Logo / Hamburger -->
     <div class="flex items-center justify-between h-16 gap-2 px-4 border-b border-green-700">
       <button @click="$emit('toggle')">
-        <font-awesome-icon
-          :icon="isOpen ? ['fas', 'bars'] : ['fas', 'times']"
-          class="text-2xl"
-        />
+        <font-awesome-icon :icon="isOpen ? ['fas', 'bars'] : ['fas', 'times']" class="text-2xl" />
       </button>
       <span v-if="isOpen" class="pr-0 text-xl font-bayon">
         ប្រព័ន្ធគ្រប់គ្រងភោជនីដ្ឋាន
@@ -21,18 +16,12 @@
     <nav class="flex-1 py-6">
       <ul class="space-y-3">
         <li v-for="item in menuItems" :key="item.name" class="relative">
-          <router-link
-            :to="{ name: item.name }"
-            class="relative flex items-center px-4 py-2 transition-all duration-300 font-bayon group"
-            :class="[
+          <router-link :to="{ name: item.name }"
+            class="relative flex items-center px-4 py-2 transition-all duration-300 font-bayon group" :class="[
               isActive(item.name) ? 'bg-green-600 text-white' : 'text-white hover:bg-green-700',
               showArrow(item.name) ? 'arrow-active' : ''
-            ]"
-          >
-            <font-awesome-icon
-              :icon="item.icon"
-              :class="isOpen ? 'mr-2 text-lg' : 'mx-auto text-lg'"
-            />
+            ]">
+            <font-awesome-icon :icon="item.icon" :class="isOpen ? 'mr-2 text-lg' : 'mx-auto text-lg'" />
             <span v-if="isOpen">{{ item.label }}</span>
           </router-link>
         </li>
@@ -83,10 +72,24 @@ const allMenuItems = [
 ];
 
 // Filter menu items based on role
-const menuItems =
-  user?.role === 'kitchen'
-    ? allMenuItems.filter(item => item.name === 'Home')
-    : allMenuItems;
+// const menuItems =
+//   user?.role === 'kitchen'
+//     ? allMenuItems.filter(item => item.name === 'Home')
+//     : allMenuItems;
+
+const role = user?.role?.toLowerCase();
+
+const menuItems = allMenuItems.filter(item => {
+  if (item.name === 'User') {
+    return role === 'admin';
+  }
+
+  if (role === 'kitchen') {
+    return item.name === 'Home' || item.name === 'Table';
+  }
+
+  return true;
+});
 
 // Function to check active route
 const isActive = (name: string) => route.name === name;
@@ -106,6 +109,7 @@ const showArrow = (name: string) => name === 'Home' && route.name === 'Home';
   height: 100%;
   border-top: 24px solid transparent;
   border-bottom: 24px solid transparent;
-  border-left: 16px solid #22c55e; /* matches bg-green-600 */
+  border-left: 16px solid #22c55e;
+  /* matches bg-green-600 */
 }
 </style>

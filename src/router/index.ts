@@ -140,22 +140,36 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore(); 
   const user = auth.getUser;
+  const role = user?.role?.toLowerCase();
 
+  // Not logged in
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    next("/login"); 
-  } else if (to.path === "/login" && auth.isAuthenticated) {
-    next("/"); 
-  } else if (user?.role === "kitchen") {
-    // restrict kitchen role
-    const allowedRoutes = ["Home", "Table", "SellList"]; // allow Home and Table
-    if (!allowedRoutes.includes(to.name as string)) {
-      next({ name: "Home" }); // redirect to Home if trying to access disallowed route
-    } else {
-      next(); // allow Home or Table
-    }
-  } else {
-    next(); // allow navigation for other roles
+    return next("/login"); 
   }
+
+  //  Already logged in, prevent login page
+  if (to.path === "/login" && auth.isAuthenticated) {
+    return next("/"); 
+  }
+
+  //  Kitchen restriction
+  if (role === "kitchen") {
+    const allowedRoutes = ["Home", "Table", "SellList"];
+
+    if (!allowedRoutes.includes(to.name as string)) {
+      return next({ name: "Home" });
+    }
+
+    return next();
+  }
+
+  // Not admin → block User page
+  if (role !== "admin" && to.name === "User") {
+    return next({ name: "Home" }); // or "Unauthorized"
+  }
+
+  // Allow everything else
+  return next();
 });
 
 

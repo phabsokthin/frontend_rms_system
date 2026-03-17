@@ -59,8 +59,6 @@
                                 {{ data.username }}
                             </td>
 
-
-
                             <!-- Email -->
                             <td class="px-6 py-3 border whitespace-nowrap">
                                 {{ data.email }}
@@ -145,7 +143,7 @@ import UserForm from './UserForm.vue';
 
 
 export default {
-    components: { Button, Pagination, Loading, DeletePopup, TextFieldInput,UserForm },
+    components: { Button, Pagination, Loading, DeletePopup, TextFieldInput, UserForm },
     setup() {
         const userAuth = useAuthStore()
         const currentData = ref<UserAuth[]>([]);
@@ -163,19 +161,36 @@ export default {
         const getUserLocal = localStorage.getItem("user")
         const getUserLocalObj = ref(JSON.parse(getUserLocal as any) || null)
 
-        // Fetch data
+        // // Fetch data
+        // onMounted(async () => {
+        //     isLoading.value = true
+        //     try {
+        //         await userAuth.fetchAllUser();
+        //         currentData.value = userAuth.getAllUser;
+
+
+        //         // console.log("userData", currentData.value)
+        //     } catch (err) {
+        //         console.log(err);
+        //     }
+        //     finally {
+        //         isLoading.value = false
+        //     }
+        // });
+
         onMounted(async () => {
             isLoading.value = true
             try {
                 await userAuth.fetchAllUser();
-                currentData.value = userAuth.getAllUser;
 
+                // filter out admin
+                currentData.value = userAuth.getAllUser.filter(
+                    (user: any) => user.role !== "admin"
+                );
 
-                // console.log("userData", currentData.value)
             } catch (err) {
                 console.log(err);
-            }
-            finally {
+            } finally {
                 isLoading.value = false
             }
         });
@@ -199,8 +214,6 @@ export default {
                 item.role?.toLowerCase().includes(term)
             )
         })
-
-
 
         // Paginated data
         const paginatedData = computed(() => {
@@ -248,7 +261,7 @@ export default {
                     message: res.message,
                     type: "success",
                 })
-                
+
             } catch (error: any) {
 
                 const message =
