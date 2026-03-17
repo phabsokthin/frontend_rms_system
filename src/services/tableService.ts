@@ -37,7 +37,6 @@ async update(table: Table): Promise<Table> {
 },
 
 // update status
-
 async updateStatus(table: Table): Promise<Table> {
   if (!table._id) {
     throw new Error("ID is required");

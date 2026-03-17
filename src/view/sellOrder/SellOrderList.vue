@@ -82,7 +82,7 @@
 
 
                             <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.staff_id?.first_name }}  {{ data.staff_id?.last_name }}
+                                {{ data.staff_id?.first_name }} {{ data.staff_id?.last_name }}
                             </td>
 
 
@@ -94,8 +94,8 @@
 
                             <td class="px-6 py-3 border whitespace-nowrap">
                                 {{ data.tax }}
-                                   <span v-if="data.currency==='usd'">$</span>
-                                      <span v-else>៛</span>
+                                <span v-if="data.currency === 'usd'">$</span>
+                                <span v-else>៛</span>
                             </td>
 
 
@@ -105,8 +105,8 @@
 
                             <td class="px-6 py-3 border whitespace-nowrap">
                                 {{ data.total_amount }}
-                                   <span v-if="data.currency==='usd'">$</span>
-                                      <span v-else>៛</span>
+                                <span v-if="data.currency === 'usd'">$</span>
+                                <span v-else>៛</span>
                             </td>
                             <!-- <td class="px-6 py-3 border whitespace-nowrap">
                         
@@ -115,11 +115,11 @@
 
                             <td class="px-6 py-3 border whitespace-nowrap ">
                                 <div class="flex flex-col">
-                                    <div> <span class="font-bayon"></span> {{ data.payment }} 
-                                    <span v-if="data.currency==='usd'">$</span>
-                                      <span v-else>៛</span>
+                                    <div> <span class="font-bayon"></span> {{ data.payment }}
+                                        <span v-if="data.currency === 'usd'">$</span>
+                                        <span v-else>៛</span>
                                     </div>
-                                    
+
                                     <!-- <span class="text-sm">លុយអាប់​ {{ data.payment - Number(data.total_amount) }}</span> -->
                                 </div>
                             </td>
@@ -151,20 +151,20 @@
                             <!-- Actions -->
                             <td class="py-3 text-center border whitespace-nowrap">
                                 <div class="flex items-center justify-between gap-2 p-2">
-
-                                    <router-link :to="{ name: 'Sell', params: { id: data._id } }" class="text-xs">
-                                        <Button variant="blue"
-                                            class="text-xs bg-blue-600 rounded-none font-bayon hover:bg-blue-500">
-                                            កែប្រែ
-                                        </Button>
-                                    </router-link>
                                     <Button variant="green" @click="(e: MouseEvent) => {
                                         e.stopPropagation();
                                         handleViewSaleOrderDetail(data, data._id.slice(-6).toUpperCase());
                                     }" class="text-xs rounded-none font-bayon">
                                         មើល
                                     </Button>
-                                    <Button variant="red" @click="(e: MouseEvent) => {
+                                    <router-link  v-if="showRole?.role !== 'kitchen'" :to="{ name: 'Sell', params: { id: data._id } }" class="text-xs">
+                                        <Button variant="blue"
+                                            class="text-xs bg-blue-600 rounded-none font-bayon hover:bg-blue-500">
+                                            កែប្រែ
+                                        </Button>
+                                    </router-link>
+
+                                    <Button  v-if="showRole?.role !== 'kitchen'" variant="red" @click="(e: MouseEvent) => {
                                         e.stopPropagation();
                                         handleDeletePopup(data._id, `${data.customer_id?.first_name} ${data.customer_id?.last_name}`);
                                     }"
@@ -195,6 +195,7 @@
                 :loadData="loadData" :showCurrentDetail="showCurrentDetail" />
         </div>
 
+     <!-- <pre>{{ showRole }}</pre> -->
 
     </div>
 </template>
@@ -218,9 +219,6 @@ import { formatDateTime } from '../../utils/formatDate';
 // import ProductForm from './ProductForm.vue';
 import SellOrderDetail from './SellOrderDetail.vue';
 
-
-
-
 export default {
     components: { Button, Pagination, Loading, DeletePopup, TextFieldInput, SellOrderDetail },
     setup() {
@@ -243,9 +241,16 @@ export default {
         const showInvoice = ref("")
 
 
+        const showRole = ref<any>(null);
+
+onMounted(() => {
+  const user = localStorage.getItem("user");
+  showRole.value = user ? JSON.parse(user) : null;
+});
 
         // Fetch data
         onMounted(async () => {
+            
             isLoading.value = true
             try {
                 await sellOrder.fetchDta();
@@ -257,6 +262,10 @@ export default {
                 isLoading.value = false
             }
         });
+
+        onMounted(()=>{
+ 
+        })
 
 
         function invoiceNumber(id: string) {
@@ -388,7 +397,8 @@ export default {
             formatDateTime,
             handleViewSaleOrderDetail,
             showCurrentDetail,
-            showInvoice
+            showInvoice,
+            showRole
         };
     },
 };
