@@ -160,12 +160,12 @@ export default {
         if (props.updateData?._id) {
           // Update user
           await userAuth.updateData(data)
-          await props.loadData()
+          // await props.loadData()
           notify({ message: 'User updated successfully', type: 'success' })
         } else {
           // Create user
           await userAuth.createUser(data)
-          await props.loadData()
+          // await props.loadData()
           notify({ message: 'User created successfully', type: 'success' })
         }
 

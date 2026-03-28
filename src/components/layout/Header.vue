@@ -59,25 +59,66 @@
         <span class="absolute text-xs px-1 font-bold text-white bg-orange-500 rounded-full shadow -right-1 -top-0.5">{{
           pendingCount }}</span>
       </router-link>
-      <router-link to="/sell" 
-        class="flex items-center gap-2 p-1 border border-green-600 rounded-md cursor-pointer hover:bg-green-700">
-        <div class="p-2 bg-green-600 rounded-full cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-bell-ring-icon lucide-bell-ring">
-            <path d="M10.268 21a2 2 0 0 0 3.464 0" />
-            <path d="M22 8c0-2.3-.8-4.3-2-6" />
-            <path
-              d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
-            <path d="M4 2C2.8 3.7 2 5.7 2 8" />
-          </svg>
+
+      <!-- Kitchen -->
+      <router-link v-if="showRole?.role === 'kitchen'" to="/notification" v-slot="{ isActive }">
+        <div :class="[
+          'flex items-center gap-2 p-1 border border-green-600 rounded-md transition relative',
+          isActive ? 'bg-green-700 text-white' : 'hover:bg-green-700'
+        ]">
+          <div class="p-2 bg-green-600 rounded-full">
+            <!-- icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+              <path d="M22 8c0-2.3-.8-4.3-2-6" />
+              <path
+                d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+              <path d="M4 2C2.8 3.7 2 5.7 2 8" />
+            </svg>
+          </div>
+
+          <span class="font-bayon">ជូនដំណឹង</span>
+          <span v-if="sellOrderDone?.length"
+            class="absolute text-xs px-1 font-bold text-white bg-orange-500 rounded-full shadow -right-1 -top-0.5">
+            {{ pendingCount }}
+          </span>
         </div>
-        <span class="font-bayon">ជូនដំណឹង</span>
       </router-link>
+
+
+      <!-- Other Roles -->
+      <router-link v-else to="/notificationDone" v-slot="{ isActive }">
+        <div :class="[
+          'relative flex items-center gap-2 p-1 border border-green-600 rounded-md transition',
+          isActive ? 'bg-green-700 text-white' : 'hover:bg-green-700'
+        ]">
+          <div class="p-2 bg-green-600 rounded-full">
+            <!-- icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+              <path d="M22 8c0-2.3-.8-4.3-2-6" />
+              <path
+                d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+              <path d="M4 2C2.8 3.7 2 5.7 2 8" />
+            </svg>
+          </div>
+
+          <span class="font-bayon">ជូនដំណឹង</span>
+
+          <!-- Badge -->
+          <span v-if="sellOrderDone?.length"
+            class="absolute text-xs px-1 font-bold text-white bg-orange-500 rounded-full shadow -right-1 -top-0.5">
+            {{ sellOrderDone.length }}
+          </span>
+        </div>
+      </router-link>
+
+
       <div></div>
       <div class="flex items-center gap-2 ">
         <span class="hidden md:inline font-bayon">ប្រវត្តិរូប៖ {{ user?.username }}</span>
-
         <span class="p-2 text-green-500 bg-white rounded-full">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -88,37 +129,60 @@
         </span>
       </div>
     </div>
+
   </header>
+
+
 </template>
 
 <script lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useAuthStore } from '../../stores/auth.store';
 import DisplayURL from '../DisplayURL.vue';
 import { sellOrderStore } from '../../stores/sellOrder.store';
+import SellOrder from '../../types/sellOrder';
+
 export default {
   components: {
     DisplayURL
   },
   setup() {
 
-    const auth = useAuthStore()
-    const user = auth.getUser
-    const sellOrder = sellOrderStore()
+    const auth = useAuthStore();
+    const user = auth.getUser;
 
-    // Count only pending orders
-    const pendingCount = computed(() => {
-      return sellOrder.data.filter(order => order.status === "pending").length;
-    });
+    const sellOrder = sellOrderStore();
+    const sellOrderDone = ref<SellOrder[]>([]);
 
+    const showRole = ref<any>(null);
+
+    // Load everything in ONE onMounted
     onMounted(async () => {
-      await sellOrder.fetchDta(); // fetch all orders first
+      // Get user role
+      const userLocal = localStorage.getItem("user");
+      showRole.value = userLocal ? JSON.parse(userLocal) : null;
+
+      // Fetch pending orders
+      await sellOrder.fetchDta();
+
+      // Fetch done orders (today if your API already filters)
+      await sellOrder.fetchDataByDone();
+      sellOrderDone.value = sellOrder.getSellOrder;
     });
 
+    // Count pending safely
+    const pendingCount = computed(() => {
+      return Array.isArray(sellOrder.data)
+        ? sellOrder.data.filter(order => order.status === "pending").length
+        : 0;
+    });
 
-    return { user, pendingCount }
+    return {
+      user,
+      pendingCount,
+      sellOrderDone,
+      showRole
+    };
   }
 };
-
-
 </script>

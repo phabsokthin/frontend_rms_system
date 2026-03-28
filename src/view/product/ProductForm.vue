@@ -66,12 +66,12 @@
                     </div>
 
                     <!-- Existing image if no new upload -->
-                    <!-- <div v-else-if="image_url" class="mt-2">
+                    <div v-else-if="image_url" class="mt-2">
                         <img :src="localServer + image_url" class="object-cover w-32 h-32 border rounded" />
-                        <button type="button" @click="handleRemoveExistingImage" class="mt-2 text-sm text-red-500">
+                        <!-- <button type="button" @click="handleRemoveExistingImage" class="mt-2 text-sm text-red-500">
                             លុបរូបភាព
-                        </button>
-                    </div> -->
+                        </button> -->
+                    </div>
                 </div>
 
                 <!-- Buttons -->
