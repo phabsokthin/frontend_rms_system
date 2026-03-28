@@ -21,6 +21,8 @@ import Expense from "../view/expense/Expense.vue";
 import SellOrderList from "../view/sellOrder/SellOrderList.vue";
 import AllReport from "../view/report/AllReport.vue";
 import User from "../view/auth/User.vue";
+import Notification from "../view/notification/Notification.vue";
+import NotificationDone from "../view/notification/NotificationDone.vue";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -108,6 +110,16 @@ const routes: RouteRecordRaw[] = [
         name: "Report",
         component: AllReport,
       },
+      {
+        path: "notification",
+        name: "Notification",
+        component: Notification,
+      },
+      {
+        path: "notificationDone",
+        name: "NotificationDone",
+        component: NotificationDone,
+      },
     ],
   },
   //no path
@@ -135,26 +147,25 @@ const router = createRouter({
 //   }
 // });
 
-
 // route guard or protection route
 router.beforeEach((to, from, next) => {
-  const auth = useAuthStore(); 
+  const auth = useAuthStore();
   const user = auth.getUser;
   const role = user?.role?.toLowerCase();
 
   // Not logged in
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    return next("/login"); 
+    return next("/login");
   }
 
   //  Already logged in, prevent login page
   if (to.path === "/login" && auth.isAuthenticated) {
-    return next("/"); 
+    return next("/");
   }
 
   //  Kitchen restriction
   if (role === "kitchen") {
-    const allowedRoutes = ["Home", "Table", "SellList"];
+    const allowedRoutes = ["Home", "Table", "SellList", "Notification"];
 
     if (!allowedRoutes.includes(to.name as string)) {
       return next({ name: "Home" });
@@ -171,6 +182,5 @@ router.beforeEach((to, from, next) => {
   // Allow everything else
   return next();
 });
-
 
 export default router;

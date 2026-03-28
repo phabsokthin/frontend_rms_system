@@ -139,9 +139,15 @@
                             <td class="px-6 py-3 border whitespace-nowrap font-bayon">
                                 {{ data.notes }}
                             </td>
-                            <td class="px-6 py-3 border whitespace-nowrap font-bayon">
+                            <td class="px-6 py-3 text-center border whitespace-nowrap font-bayon">
                                 <span v-if="data.status === 'pending'"
-                                    class="p-1 text-xs text-orange-500 rounded-md bg-orange-50">កំពុងរង់ចាំ</span>
+                                    class="p-1 text-xs text-yellow-500 bg-orange-100 rounded-md">កំពុងរង់ចាំ</span>
+                                 <span v-if="data.status === 'processing'"
+                                    class="p-1 text-xs text-orange-500 bg-orange-100 rounded-md">កំពុងដំណើរការ</span>
+                                   <span v-if="data.status === 'done'"
+                                    class="p-1 text-xs text-green-500 bg-green-100 rounded-md">រួចរាល់</span>
+                                     <span v-if="data.status === 'paid'"
+                                    class="p-1 text-xs text-blue-500 bg-blue-100 rounded-md">បានទូទាត់</span>
                             </td>
 
                             <td class="px-6 py-3 border whitespace-nowrap">
@@ -157,14 +163,15 @@
                                     }" class="text-xs rounded-none font-bayon">
                                         មើល
                                     </Button>
-                                    <router-link  v-if="showRole?.role !== 'kitchen'" :to="{ name: 'Sell', params: { id: data._id } }" class="text-xs">
+                                    <router-link v-if="showRole?.role !== 'kitchen'"
+                                        :to="{ name: 'Sell', params: { id: data._id } }" class="text-xs">
                                         <Button variant="blue"
                                             class="text-xs bg-blue-600 rounded-none font-bayon hover:bg-blue-500">
                                             កែប្រែ
                                         </Button>
                                     </router-link>
 
-                                    <Button  v-if="showRole?.role !== 'kitchen'" variant="red" @click="(e: MouseEvent) => {
+                                    <Button v-if="showRole?.role !== 'kitchen'" variant="red" @click="(e: MouseEvent) => {
                                         e.stopPropagation();
                                         handleDeletePopup(data._id, `${data.customer_id?.first_name} ${data.customer_id?.last_name}`);
                                     }"
@@ -195,7 +202,7 @@
                 :loadData="loadData" :showCurrentDetail="showCurrentDetail" />
         </div>
 
-     <!-- <pre>{{ showRole }}</pre> -->
+        <!-- <pre>{{ showRole }}</pre> -->
 
     </div>
 </template>
@@ -243,14 +250,14 @@ export default {
 
         const showRole = ref<any>(null);
 
-onMounted(() => {
-  const user = localStorage.getItem("user");
-  showRole.value = user ? JSON.parse(user) : null;
-});
+        onMounted(() => {
+            const user = localStorage.getItem("user");
+            showRole.value = user ? JSON.parse(user) : null;
+        });
 
         // Fetch data
         onMounted(async () => {
-            
+
             isLoading.value = true
             try {
                 await sellOrder.fetchDta();
@@ -263,8 +270,8 @@ onMounted(() => {
             }
         });
 
-        onMounted(()=>{
- 
+        onMounted(() => {
+
         })
 
 

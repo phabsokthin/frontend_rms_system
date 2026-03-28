@@ -26,8 +26,11 @@ export default {
             "/sell": "ផ្ទាំងលក់",
             "/purchase": "បញ្ជីទិញផលិតផលចូល",
             "/expense": "ការចំណាយ",
-             "/user": "អ្នកប្រើប្រាស់",
+            "/user": "អ្នកប្រើប្រាស់",
+            "/notification": "បញ្ជីការជូនដំណឹង",
+            "/notificationDone": "បញ្ជីការជូនដំណឹងបានបញ្ជូន",
             "/report": "របាយការណ៍",
+            
         };
 
         const pageTitle = computed(() => titles[route.path] || "");

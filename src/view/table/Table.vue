@@ -25,10 +25,10 @@
             ]">
                 <div>
                     <div class="flex justify-center">
-                           <div class="p-4 mb-3 border rounded-md bg-gray-50">
+                        <div class="p-4 mb-3 border rounded-md bg-gray-50">
                             <img src="../../assets/restaurant-table-and-chairs-svgrepo-com (1).svg" alt=""
-                                    class="w-10 mb-1" />
-                           </div>
+                                class="w-10 mb-1" />
+                        </div>
                     </div>
                     <h2 class="mb-2 text-xl font-semibold underline"><span class="font-bayon">លេខ</span>{{
                         table.table_number }}</h2>
@@ -40,10 +40,13 @@
                         </span>
                     </p>
                     <p class="font-bayon">ទីតាំង: {{ table.location }}</p>
-                     <p v-if="table.draft" class="font-bayon">ចំណាំ: <span class="text-red-500">{{ table.draft }}</span></p>
+                    <p v-if="table.draft" class="font-bayon">ចំណាំ: <span class="text-red-500">{{ table.draft }}</span>
+                    </p>
                 </div>
-                <div v-if="!table.status === false" class="flex mt-4">
-                     <Button @click="handleDraft(table)" variant="blue" class="text-sm bg-orange-500 rounded-none hover:bg-orange-600 font-bayon">
+               <div v-if="showRole?.role !=='kitchen'">
+                 <div v-if="!table.status === false" class="flex mt-4">
+                    <Button @click="handleDraft(table)" variant="blue"
+                        class="text-sm bg-orange-500 rounded-none hover:bg-orange-600 font-bayon">
                         បម្រុង
                     </Button>
                     <Button @click="handleUpdatePopup(table)" variant="blue" class="text-sm rounded-none font-bayon">
@@ -60,6 +63,7 @@
                         កំណត់ឡើងវិញ
                     </Button>
                 </div>
+               </div>
             </div>
 
             <!-- No Data -->
@@ -74,6 +78,8 @@
         <component :is="currentComponent" @close="currentComponent = ''" :loadData="loadData"
             :updateData="updateData" />
     </div>
+
+   
 </template>
 
 <script lang="ts">
@@ -87,6 +93,8 @@ import { tableStore } from '../../stores/table.store';
 import Table from '../../types/table';
 import TableForm from './TableForm.vue';
 import DraftForm from './DraftForm.vue';
+
+
 
 export default {
     components: { Button, Loading, DeletePopup, TextFieldInput, TableForm, DraftForm },
@@ -102,6 +110,9 @@ export default {
         const currentComponent = ref('');
         const updateData = ref('');
 
+            const showRole = ref<any>(null);
+        
+
         onMounted(async () => {
             isLoading.value = true;
             try {
@@ -113,6 +124,12 @@ export default {
                 isLoading.value = false;
             }
         });
+
+        onMounted(async () => {
+               const userLocal = localStorage.getItem("user");
+      showRole.value = userLocal ? JSON.parse(userLocal) : null;
+
+        })
 
         //filter data
         const filteredData = computed(() =>
@@ -171,7 +188,7 @@ export default {
                 await tables.fetchDta();
                 currentData.value = tables.getTatble
             }
-            catch (err:any) {
+            catch (err: any) {
                 notify({
                     message: err?.message || "Error",
                     type: "error",
@@ -180,12 +197,10 @@ export default {
         }
 
         //draft first
-
-
-          const handleDraft = (data: any) => {
+        const handleDraft = (data: any) => {
             currentComponent.value = 'DraftForm';
             updateData.value = data;
-            
+
         };
 
         return {
@@ -203,7 +218,8 @@ export default {
             filteredData,
             loadData,
             handleUpdateStatusTrue,
-            handleDraft
+            handleDraft,
+            showRole
         };
     },
 };

@@ -48,6 +48,26 @@ export const sellOrderStore = defineStore("sellOrder", {
       }
     },
 
+    // fetch dall data
+    async fetchDataByPending() {
+      try {
+        const data = await sellOrderService.getAllByStatusPending();
+        this.setData(data);
+      } catch (error) {
+        handleApiError(error, "Failed to fetch data");
+      }
+    },
+
+    // fetch dall data
+    async fetchDataByDone() {
+      try {
+        const data = await sellOrderService.getAllByStatusDone();
+        this.setData(data);
+      } catch (error) {
+        handleApiError(error, "Failed to fetch data");
+      }
+    },
+
     // create table
     async createData(datas: SellOrder) {
       try {
@@ -63,6 +83,36 @@ export const sellOrderStore = defineStore("sellOrder", {
     async updateData(datas: SellOrder) {
       try {
         const data = await sellOrderService.update(datas);
+        return data;
+      } catch (error) {
+        handleApiError(error, "Failed to update data");
+      }
+    },
+
+    // update status
+    async updateStatusProccessing(datas: SellOrder) {
+      try {
+        const data = await sellOrderService.updateToProcessing(datas);
+        return data;
+      } catch (error) {
+        handleApiError(error, "Failed to update data");
+      }
+    },
+
+    // update status
+    async updateStatusDone(datas: SellOrder) {
+      try {
+        const data = await sellOrderService.updateToDone(datas);
+        return data;
+      } catch (error) {
+        handleApiError(error, "Failed to update data");
+      }
+    },
+
+     // update status paid
+    async updateStatusPaid(datas: SellOrder) {
+      try {
+        const data = await sellOrderService.updateToPaid(datas);
         return data;
       } catch (error) {
         handleApiError(error, "Failed to update data");
