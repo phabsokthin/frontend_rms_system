@@ -72,6 +72,7 @@ export default {
                 const data: UserAuth = {
                     email: email.value,
                     password: password.value,
+                
                 }
 
                 const res = await auth.login(data)

@@ -253,12 +253,6 @@ export default {
             }
 
 
-            // if (!id) {
-            //     total_amount.value = props.updateData.total_amount
-            // }
-            // else if (props.updateData) {
-
-            // }
 
 
             total_amount.value = props.updateData.total_amount + tax.value - discount.value
