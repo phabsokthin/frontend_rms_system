@@ -20,7 +20,6 @@
                 <div>
                     <Select v-model="status" required :options="statusOptions" label="ស្ថានភាព"
                         placeholder="ជ្រើសរើសស្ថានភាព" />
-
                 </div>
 
                 <div class="flex justify-end gap-3 mt-4">
