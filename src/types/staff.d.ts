@@ -14,4 +14,5 @@ export default interface Staff {
     status: boolean,
     created_at?: string,
     updated_at?: string
+
 }
