@@ -9,7 +9,7 @@
         <font-awesome-icon :icon="isOpen ? ['fas', 'bars'] : ['fas', 'times']" class="text-2xl" />
       </button>
       <span v-if="isOpen" class="pr-0 text-xl font-bayon">
-        ប្រព័ន្ធគ្រប់គ្រងភោជនីដ្ឋាន
+    ភោជនីដ្ឋានហាងបាយពូទុយ
       </span>
     </div>
 

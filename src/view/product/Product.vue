@@ -101,10 +101,11 @@
 
 
                             <td class="px-6 py-3 text-sm border whitespace-nowrap font-bayon">
-                                <span v-if="data.is_manage_stock === false" class="text-red-600">មិនគ្រប់គ្រងស្តុក</span>
+                                <span v-if="data.is_manage_stock === false"
+                                    class="text-red-600">មិនគ្រប់គ្រងស្តុក</span>
                                 <span v-else class="text-green-600">គ្រប់គ្រងស្តុក</span>
 
-                             
+
                             </td>
 
 
@@ -119,14 +120,15 @@
 
 
                             <td class="px-6 py-3 border whitespace-nowrap">
-                                <img v-if="data.image_url" :src="localServer + data.image_url"
+                                <!-- <img v-if="data.image_url" :src="localServer + data.image_url"
                                     class="object-cover w-16 h-16 border rounded" />
 
                                 <span v-else class="text-sm text-gray-400">
                                     <img src="https://bunchobagels.com/wp-content/uploads/2024/09/placeholder.jpg"
                                         class="w-20" alt="">
-                                </span>
+                                </span> -->
 
+                                <img :src="`http://35.238.114.178:3000${data.image_url}`" class="w-20" alt="">
 
                             </td>
                             <!-- Actions -->
@@ -142,6 +144,7 @@
                     </tbody>
                 </table>
             </div>
+
 
             <!-- Pagination -->
             <div class="flex items-center justify-between mt-3">
