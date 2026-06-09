@@ -57,7 +57,9 @@
                     class="p-2 bg-white border cursor-pointer hover:shadow-md hover:border-green-500">
                     <div class="flex justify-center">
                         <div v-if="item.image_url">
-                            <img :src="localServer + item.image_url" class="object-cover rounded h-28" />
+                            <!-- <img :src="localServer + item.image_url" class="object-cover rounded h-28" /> -->
+                                                             <img :src="`http://35.238.114.178:3000${item.image_url}`" class="object-cover rounded h-28" alt="">
+
                         </div>
                         <div v-else>
                             <img src="https://order.eatify.io/assets/img/eatify/default-menu-image-placeholder.png"
@@ -73,7 +75,7 @@
                         {{ item.category_id?.name }}
                     </p>
 
-                    <div class="flex justify-between mt-1 font-bayon">
+                    <div class="flex justify-between mt-1">
                         <span class="font-bold text-green-600">
                             {{ item.price }}
                         </span>
@@ -114,7 +116,10 @@
 
                     <div v-for="item in cart" :key="item._id" class="flex items-center justify-between py-2">
                         <div class="flex items-start gap-3">
-                            <img :src="localServer + item.image_url" class="object-cover p-2 border h-28 w-28" />
+                            <!-- <img :src="localServer + item.image_url" class="object-cover p-2 border h-28 w-28" /> -->
+
+                                                            <img :src="`http://35.238.114.178:3000${item.image_url}`" class="object-cover p-2 border w-28 h-28" alt="">
+
                             <!-- Name and Price -->
                             <div class="flex flex-col justify-between gap-2">
                                 <div>

@@ -35,8 +35,14 @@
                         <a href="#" class="text-xs text-gray-500 uppercase">or sign up</a>
                         <span class="w-1/5 border-b md:w-1/4"></span>
                     </div>
+                    <div>
+                        <h1 class="text-gray-600">Gmail: admin123@gmail.com</h1>
+                        <h1 class="text-gray-600">Password: 123456</h1>
+                    </div>
                 </div>
             </form>
+
+
         </div>
     </div>
 </template>
@@ -72,7 +78,7 @@ export default {
                 const data: UserAuth = {
                     email: email.value,
                     password: password.value,
-                
+
                 }
 
                 const res = await auth.login(data)
