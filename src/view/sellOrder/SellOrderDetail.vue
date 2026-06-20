@@ -150,7 +150,7 @@ import TextAreaInput from '../../components/ui/TextAreaInput.vue'
 import SellOrder from '../../types/sellOrder'
 import { formatDateTime } from '../../utils/formatDate'
 import { computed, ref, watchEffect } from 'vue'
-// import { localServer } from '../../../server/localServer'
+import { localServer } from '../../../server/localServer'
 
 export default {
     components: { TextFieldInput, Button, Select, TextAreaInput },

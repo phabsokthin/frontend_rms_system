@@ -6,7 +6,7 @@
 
             <!-- Header -->
             <div class="mb-[15px] flex items-center justify-between">
-                <h1 class="text-xl font-bayon">ផ្ទាំងលក់</h1>
+                <h1 class="text-xl ">ផ្ទាំងលក់</h1>
 
                 <div class="flex gap-2">
                 </div>
@@ -19,14 +19,14 @@
                 <div class="flex w-full gap-2 mb-2 overflow-x-auto whitespace-nowrap">
 
                     <button @click="selectedCategory = null" :class="[
-                        'px-3 py-2 border font-bayon flex-shrink-0 ',
+                        'px-3 py-2 border  flex-shrink-0 ',
                         !selectedCategory ? 'bg-green-500 text-white' : 'bg-white'
                     ]">
                         ទាំងអស់
                     </button>
 
                     <button v-for="cat in categories" :key="cat._id" @click="selectedCategory = cat._id" :class="[
-                        'px-3 py-1 border font-bayon flex-shrink-0',
+                        'px-3 py-1 border  flex-shrink-0',
                         selectedCategory === cat._id
                             ? 'bg-green-500 text-white'
                             : 'bg-white'
@@ -37,7 +37,7 @@
                 </div>
 
                 <!-- Search -->
-                <TextFieldInput v-model="searchTerm" placeholder="ស្វែងរកផលិតផល" class="w-full mb-2 font-bayon" />
+                <TextFieldInput v-model="searchTerm" placeholder="ស្វែងរកផលិតផល" class="w-full mb-2 " />
 
             </div>
 
@@ -47,7 +47,7 @@
 
             <!-- Not Found -->
             <div v-else-if="paginatedData.length === 0"
-                class="flex items-center justify-center text-lg text-gray-400 h-60 font-bayon">
+                class="flex items-center justify-center text-lg text-gray-400 h-60 ">
                 មិនមានទិន្នន័យ
             </div>
 
@@ -57,8 +57,8 @@
                     class="p-2 bg-white border cursor-pointer hover:shadow-md hover:border-green-500">
                     <div class="flex justify-center">
                         <div v-if="item.image_url">
-                            <!-- <img :src="localServer + item.image_url" class="object-cover rounded h-28" /> -->
-                                                             <img :src="`http://35.238.114.178:3000${item.image_url}`" class="object-cover rounded h-28" alt="">
+                            <img :src="localServer + item.image_url" class="object-cover rounded h-28" />
+                                                             <!-- <img :src="`http://35.238.114.178:3000${item.image_url}`" class="object-cover rounded h-28" alt=""> -->
 
                         </div>
                         <div v-else>
@@ -67,11 +67,11 @@
                         </div>
                     </div>
 
-                    <h3 class="mt-2 text-xl font-bayon">
+                    <h3 class="mt-2 text-xl ">
                         {{ item.name }}
                     </h3>
 
-                    <p class="text-sm text-gray-500 gray-500 font-bayon">
+                    <p class="text-sm text-gray-500 gray-500 ">
                         {{ item.category_id?.name }}
                     </p>
 
@@ -98,7 +98,7 @@
 
         <!-- RIGHT SIDE (CART) -->
         <div class="flex flex-col col-span-4 p-4 bg-white border h-[600px] overflow-y-auto ">
-            <h2 class="mb-3 text-lg font-bayon">
+            <h2 class="mb-3 text-lg ">
                 បញ្ជីការទិញ
             </h2>
 
@@ -109,21 +109,21 @@
                 <div v-if="cart.length === 0" class="flex flex-col items-center justify-center py-10 text-gray-400">
                     <img src="https://orders.redrockcanyongrill.com/assets/img/redrock/default-menu-image-placeholder.png"
                         alt="Not found" class="object-contain w-48 mb-3" />
-                    <p class="text-lg font-bayon">មិនមានទំនិញ</p>
+                    <p class="text-lg ">មិនមានទំនិញ</p>
                 </div>
 
                 <div v-else>
 
                     <div v-for="item in cart" :key="item._id" class="flex items-center justify-between py-2">
                         <div class="flex items-start gap-3">
-                            <!-- <img :src="localServer + item.image_url" class="object-cover p-2 border h-28 w-28" /> -->
+                            <img :src="localServer + item.image_url" class="object-cover p-2 border h-28 w-28" />
 
-                                                            <img :src="`http://35.238.114.178:3000${item.image_url}`" class="object-cover p-2 border w-28 h-28" alt="">
+                                                            <!-- <img :src="`http://35.238.114.178:3000${item.image_url}`" class="object-cover p-2 border w-28 h-28" alt=""> -->
 
                             <!-- Name and Price -->
                             <div class="flex flex-col justify-between gap-2">
                                 <div>
-                                    <p class="text-lg font-bayon">{{ item.name }}</p>
+                                    <p class="text-lg ">{{ item.name }}</p>
                                     <p class="text-sm text-gray-400">
                                         ${{ item.price }} each
                                     </p>
@@ -132,20 +132,20 @@
                                 <div class="flex items-center">
                                     <!-- Decrease Button -->
                                     <Button variant="gray"
-                                        class="w-6 h-8 bg-orange-500 rounded-none font-bayon hover:bg-orange-400 "
+                                        class="w-6 h-8 bg-orange-500 rounded-none hover:bg-orange-400 "
                                         @click="decreaseQty(item._id)">
                                         -
                                     </Button>
 
                                     <!-- Quantity Display -->
                                     <span
-                                        class="flex items-center justify-center w-8 h-8 border border-r-0 border-l-0font-bayon bg-gray-50">
+                                        class="flex items-center justify-center w-8 h-8 border border-l-0 border-r-0 bg-gray-50">
                                         {{ item.qty }}
                                     </span>
 
                                     <!-- Increase Button -->
                                     <Button variant="green"
-                                        class="w-8 h-8 text-white rounded-none font-bayon hover:bg-green-500"
+                                        class="w-8 h-8 text-white rounded-none hover:bg-green-500"
                                         @click="increaseQty(item._id)">
                                         +
                                     </Button>
@@ -157,7 +157,7 @@
 
                         <!-- Remove Item -->
                         <Button variant="red" @click="removeFromCart(item._id)"
-                            class="flex items-center justify-center w-8 h-8 rounded-none font-bayon hover:bg-red-600">
+                            class="flex items-center justify-center w-8 h-8 rounded-none hover:bg-red-600">
                             <font-awesome-icon :icon="faTimes" class="text-sm text-white cursor-pointer" />
                         </Button>
                     </div>
@@ -175,7 +175,7 @@
                     <span>{{ totalPrice }}</span>
                 </div>
 
-                <Button @click="handleViewPayment" class="flex w-full mt-3 rounded-none font-bayon" variant="green">
+                <Button @click="handleViewPayment" class="flex w-full mt-3 rounded-none " variant="green">
                     <div class="flex gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
