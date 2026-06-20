@@ -118,7 +118,7 @@
 
       <div></div>
       <div class="flex items-center gap-2 ">
-        <span class="hidden md:inline font-bayon">ប្រវត្តិរូប៖ {{ user?.username }}</span>
+        <span class="hidden capitalize md:inline font-bayon">ប្រវត្តិរូប៖ {{ user?.username }}</span>
         <span class="p-2 text-green-500 bg-white rounded-full">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

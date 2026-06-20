@@ -120,15 +120,15 @@
 
 
                             <td class="px-6 py-3 border whitespace-nowrap">
-                                <!-- <img v-if="data.image_url" :src="localServer + data.image_url"
+                                <img v-if="data.image_url" :src="localServer + data.image_url"
                                     class="object-cover w-16 h-16 border rounded" />
 
                                 <span v-else class="text-sm text-gray-400">
                                     <img src="https://bunchobagels.com/wp-content/uploads/2024/09/placeholder.jpg"
                                         class="w-20" alt="">
-                                </span> -->
+                                </span>
 
-                                <img :src="`http://35.238.114.178:3000${data.image_url}`" class="w-20" alt="">
+                                <!-- <img :src="`http://35.238.114.178:3000${data.image_url}`" class="w-20" alt=""> -->
 
                             </td>
                             <!-- Actions -->

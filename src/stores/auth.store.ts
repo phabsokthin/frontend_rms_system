@@ -42,7 +42,7 @@ export const useAuthStore = defineStore("auth", {
             const data = await authService.create(user);
             return data;
           } catch (error) {
-            handleApiError(error, "Failed to create category");
+            // handleApiError(error, "Failed to create category");
           }
         },
     

@@ -6,10 +6,10 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        noto: ['"Noto Serif"', 'serif'],
-        bayon: ['Bayon', 'sans-serif'],
-      },
+      // fontFamily: {
+      //   noto: ['"Noto Serif"', 'serif'],
+      //   bayon: ['Bayon', 'sans-serif'],
+      // },
     },
   },
   plugins: [],

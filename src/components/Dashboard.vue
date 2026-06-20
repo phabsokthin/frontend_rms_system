@@ -1,31 +1,31 @@
 <template>
     <div class="p-4">
-        <h1 class="mb-6 text-2xl font-bold font-bayon">ផ្ទាំងគ្រប់គ្រង</h1>
+        <h1 class="mb-6 text-2xl font-bold ">ផ្ទាំងគ្រប់គ្រង</h1>
 
         <!-- 4-column grid -->
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <!-- Card 1: Sales -->
             <div class="p-4 text-white transition bg-blue-500 shadow hover:bg-blue-600">
-                <h2 class="text-lg font-bayon">លក់</h2>
-                <p class="mt-2 text-sm "><span class="font-bayon">លក់ថ្ងៃនេះ</span>: {{ totalUSD }} $ || {{ totalKHR }} ៛</p>
+                <h2 class="text-lg ">លក់</h2>
+                <p class="mt-2 text-sm "><span class="">លក់ថ្ងៃនេះ</span>: {{ totalUSD }} $ || {{ totalKHR }} ៛</p>
             </div>
 
             <!-- Card 2: Orders -->
             <div class="p-4 text-white transition bg-green-500 shadow hover:bg-green-600">
-                <h2 class="text-lg font-bayon">បញ្ជាទិញ</h2>
-                <p class="mt-2 text-sm"><span class="font-bayon">កាម្ម៉ងថ្ងៃនេះ</span>: {{ sellOrderData.length }} នាក់</p>
+                <h2 class="text-lg ">បញ្ជាទិញ</h2>
+                <p class="mt-2 text-sm"><span class="">កាម្ម៉ងថ្ងៃនេះ</span>: {{ sellOrderData.length }} នាក់</p>
             </div>
 
             <!-- Card 3: Customers -->
             <div class="p-4 text-white transition bg-yellow-500 shadow hover:bg-yellow-600">
-                <h2 class="text-lg font-bayon">អតិថិជន</h2>
-                <p class="mt-2 text-sm "><span class="font-bayon">អតិថិជន​ថ្មី</span>: {{ currentData.length }} នាក់</p>
+                <h2 class="text-lg ">អតិថិជន</h2>
+                <p class="mt-2 text-sm "><span class="">អតិថិជន​ថ្មី</span>: {{ currentData.length }} នាក់</p>
             </div>
 
             <!-- Card 4: Profit -->
             <div class="p-4 text-white transition bg-red-500 shadow hover:bg-red-600">
-                <h2 class="text-lg font-bayon">អ្នកផ្គត់ផ្គង់</h2>
-                <p class="mt-2 text-sm"><span class="font-bayon">អ្នកផ្គត់ផ្គង់ថ្មី</span>: {{ suplierData.length }}
+                <h2 class="text-lg ">អ្នកផ្គត់ផ្គង់</h2>
+                <p class="mt-2 text-sm"><span class="">អ្នកផ្គត់ផ្គង់ថ្មី</span>: {{ suplierData.length }}
                     នាក់
                 </p>
             </div>
