@@ -12,75 +12,32 @@
       <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
 
         <!-- Username -->
-        <TextFieldInput
-          label="ឈ្មោះអ្នកប្រើប្រាស់"
-          v-model="username"
-          placeholder="Enter Username"
-          required
-        />
+        <TextFieldInput label="ឈ្មោះអ្នកប្រើប្រាស់" v-model="username" placeholder="Enter Username" required />
 
         <!-- Email -->
-        <TextFieldInput
-          label="អ៊ីម៉ែល"
-          type="email"
-          v-model="email"
-          placeholder="Enter Email"
-          required
-        />
+        <TextFieldInput label="អ៊ីម៉ែល" type="email" v-model="email" placeholder="Enter Email" required />
 
         <!-- Password -->
-        <TextFieldInput
-          label="លេខសម្ងាត់"
-          type="password"
-          v-model="password"
-          placeholder="Enter Password"
-          :required="!updateData"
-        />
+        <TextFieldInput label="លេខសម្ងាត់" type="password" v-model="password" placeholder="Enter Password"
+          :required="!updateData" />
 
         <!-- Confirm Password -->
-        <TextFieldInput
-          label="បញ្ជាក់លេខសម្ងាត់"
-          type="password"
-          v-model="confirmPassword"
-          placeholder="Confirm Password"
-          :required="!updateData"
-        />
+        <TextFieldInput label="បញ្ជាក់លេខសម្ងាត់" type="password" v-model="confirmPassword"
+          placeholder="Confirm Password" :required="!updateData" />
 
         <!-- Role -->
-        <Select
-          label="តួនាទី"
-          v-model="role"
-          :options="roleOptions"
-          placeholder="ជ្រើសរើសតួនាទី"
-          required
-        />
+        <Select label="តួនាទី" v-model="role" :options="roleOptions" placeholder="ជ្រើសរើសតួនាទី" required />
 
         <!-- Status -->
-        <Select
-          label="ស្ថានភាព"
-          v-model="status"
-          :options="statusOptions"
-          placeholder="ជ្រើសរើសស្ថានភាព"
-          required
-        />
+        <Select label="ស្ថានភាព" v-model="status" :options="statusOptions" placeholder="ជ្រើសរើសស្ថានភាព" required />
 
         <!-- Actions -->
         <div class="flex justify-end gap-3 mt-4">
-          <Button
-            @click="handleClose"
-            type="button"
-            variant="red"
-            class="rounded-none font-bayon"
-          >
+          <Button @click="handleClose" type="button" variant="red" class="rounded-none font-bayon">
             បោះបង់
           </Button>
 
-          <Button
-            :loading="isLoading"
-            type="submit"
-            variant="green"
-            class="rounded-none font-bayon"
-          >
+          <Button :loading="isLoading" type="submit" variant="green" class="rounded-none font-bayon">
             {{ updateData ? 'រក្សាទុក' : 'បង្កើត' }}
           </Button>
         </div>
@@ -97,7 +54,7 @@ import Select from '../../components/ui/Select.vue'
 import Button from '../../components/ui/Button.vue'
 import { useNotification } from '../../composables/useNotification'
 import { useAuthStore } from '../../stores/auth.store'
-import UserAuth from '../../types/auth'
+import type UserAuth from '../../types/auth'
 
 export default {
   components: { TextFieldInput, Select, Button },
@@ -162,11 +119,17 @@ export default {
           await userAuth.updateData(data)
           // await props.loadData()
           notify({ message: 'User updated successfully', type: 'success' })
+          setTimeout(() => {
+            window.location.reload()
+          }, 500)
         } else {
           // Create user
           await userAuth.createUser(data)
           // await props.loadData()
           notify({ message: 'User created successfully', type: 'success' })
+          setTimeout(() => {
+            window.location.reload()
+          }, 500)
         }
 
         handleClose()

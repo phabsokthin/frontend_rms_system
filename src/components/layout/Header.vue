@@ -136,11 +136,10 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useAuthStore } from '../../stores/auth.store';
 import DisplayURL from '../DisplayURL.vue';
 import { sellOrderStore } from '../../stores/sellOrder.store';
-import SellOrder from '../../types/sellOrder';
 
 export default {
   components: {
@@ -152,29 +151,48 @@ export default {
     const user = auth.getUser;
 
     const sellOrder = sellOrderStore();
-    const sellOrderDone = ref<SellOrder[]>([]);
-
     const showRole = ref<any>(null);
+    let pollInterval: any = null;
 
-    // Load everything in ONE onMounted
+    const fetchRealTimeCounts = async () => {
+      try {
+        await Promise.all([
+          sellOrder.fetchPendingRealTime(),
+          sellOrder.fetchDoneRealTime()
+        ]);
+      } catch (error) {
+        console.error("Error fetching real-time counts:", error);
+      }
+    };
+
     onMounted(async () => {
       // Get user role
       const userLocal = localStorage.getItem("user");
       showRole.value = userLocal ? JSON.parse(userLocal) : null;
 
-      // Fetch pending orders
-      await sellOrder.fetchDta();
+      // Fetch pending and done orders immediately
+      await fetchRealTimeCounts();
 
-      // Fetch done orders (today if your API already filters)
-      await sellOrder.fetchDataByDone();
-      sellOrderDone.value = sellOrder.getSellOrder;
+      // Poll every 5 seconds for updates
+      pollInterval = setInterval(fetchRealTimeCounts, 5000);
+    });
+
+    onUnmounted(() => {
+      if (pollInterval) {
+        clearInterval(pollInterval);
+      }
     });
 
     // Count pending safely
     const pendingCount = computed(() => {
-      return Array.isArray(sellOrder.data)
-        ? sellOrder.data.filter(order => order.status === "pending").length
+      return Array.isArray(sellOrder.pendingOrders)
+        ? sellOrder.pendingOrders.length
         : 0;
+    });
+
+    // Done orders
+    const sellOrderDone = computed(() => {
+      return sellOrder.doneOrders;
     });
 
     return {

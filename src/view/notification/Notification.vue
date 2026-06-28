@@ -137,9 +137,9 @@ import Loading from '../../components/ui/Loading.vue';
 import DeletePopup from '../../components/ui/DeletePopup.vue';
 import TextFieldInput from '../../components/ui/TextFieldInput.vue';
 import { useNotification } from '../../composables/useNotification';
-import Table from '../../types/table';
+
 import { sellOrderStore } from '../../stores/sellOrder.store';
-import SellOrder from '../../types/sellOrder';
+import type SellOrder from '../../types/sellOrder';
 import { formatDateTime } from '../../utils/formatDate';
 import { localServer } from '../../../server/localServer';
 
@@ -227,11 +227,13 @@ export default {
                         _id: id,
                     }
                     sellOrder.updateStatusProccessing(data as any)
-                    loadData()
                     notify({
                         message: "Status updated processing",
                         type: "success",
                     })
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 500)
                 }
             }
             catch (err: any) {
@@ -251,11 +253,13 @@ export default {
                         _id: id,
                     }
                     await sellOrder.updateStatusDone(data as any)
-                    loadData()
                     notify({
                         message: "Status updated processing to done",
                         type: "success",
                     })
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 500)
                 }
             }
             catch (err: any) {
