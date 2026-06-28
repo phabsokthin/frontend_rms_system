@@ -7,6 +7,8 @@ import sellOrderService from "../services/sellOrderService";
 export const sellOrderStore = defineStore("sellOrder", {
   state: () => ({
     data: [] as SellOrder[], 
+    pendingOrders: [] as SellOrder[],
+    doneOrders: [] as SellOrder[],
   }),
 
   getters: {
@@ -17,6 +19,24 @@ export const sellOrderStore = defineStore("sellOrder", {
   actions: {
     setData(data: SellOrder[]) {
       this.data = data;
+    },
+
+    async fetchPendingRealTime() {
+      try {
+        const data = await sellOrderService.getAllByStatusPending();
+        this.pendingOrders = data;
+      } catch (error) {
+        handleApiError(error, "Failed to fetch pending orders");
+      }
+    },
+
+    async fetchDoneRealTime() {
+      try {
+        const data = await sellOrderService.getAllByStatusDone();
+        this.doneOrders = data;
+      } catch (error) {
+        handleApiError(error, "Failed to fetch done orders");
+      }
     },
 
     // fetch dall data

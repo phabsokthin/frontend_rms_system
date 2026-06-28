@@ -63,7 +63,7 @@
                         </div>
                         <div v-else>
                             <img src="https://order.eatify.io/assets/img/eatify/default-menu-image-placeholder.png"
-                                class="object-cover rounded h-28">
+                                class="object-cover rounded h-28 w-28">
                         </div>
                     </div>
 
@@ -116,7 +116,8 @@
 
                     <div v-for="item in cart" :key="item._id" class="flex items-center justify-between py-2">
                         <div class="flex items-start gap-3">
-                            <img :src="localServer + item.image_url" class="object-cover p-2 border h-28 w-28" />
+                            <img v-if="item.image_url" :src="localServer + item.image_url" class="object-cover p-2 border h-28 w-28" />
+                            <img v-else src="https://kingstonkafe.com/wp-content/uploads/woocommerce-placeholder.png" class="h-28 w-28 object-cover border" alt="">
 
                                                             <!-- <img :src="`http://35.238.114.178:3000${item.image_url}`" class="object-cover p-2 border w-28 h-28" alt=""> -->
 
@@ -125,7 +126,7 @@
                                 <div>
                                     <p class="text-lg ">{{ item.name }}</p>
                                     <p class="text-sm text-gray-400">
-                                        ${{ item.price }} each
+                                        {{ item.price }} each
                                     </p>
                                 </div>
 
@@ -219,7 +220,7 @@ import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import SellOrderInfo from "./SellOrderInfo.vue";
 import { sellOrderStore } from "../../stores/sellOrder.store";
 import { useRoute } from "vue-router";
-import SellOrder from "../../types/sellOrder";
+import type SellOrder from "../../types/sellOrder";
 
 
 export default {

@@ -111,7 +111,7 @@
 
                             <!-- Salary -->
                             <td class="px-6 py-3 border whitespace-nowrap">
-                                {{ data.salary }}
+                                {{ data.salary }} $
                             </td>
 
                             <!-- Status -->
@@ -162,14 +162,14 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import Button from '../../components/ui/Button.vue';
 import Pagination from '../../components/ui/Pagination.vue';
-import type Category from '../../types/category';
+
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import Loading from '../../components/ui/Loading.vue';
 import DeletePopup from '../../components/ui/DeletePopup.vue';
 import TextFieldInput from '../../components/ui/TextFieldInput.vue';
 import { useNotification } from '../../composables/useNotification';
 import { staffStore } from '../../stores/staff.store';
-import Staff from '../../types/staff';
+import type Staff from '../../types/staff';
 import StaffForms from './StaffForms.vue';
 
 
