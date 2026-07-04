@@ -10,7 +10,7 @@
             <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
                 <TextFieldInput label="ឈ្មោះ" ref="firstInput" v-model="names" placeholder="Cateogry Name" class=""
                     required />
-                <TextFieldInput label="ពិព៍រនា" v-model="description" placeholder="Description" class="" />
+                <TextFieldInput label="ពិណ៍នា" v-model="description" placeholder="Description" class="" />
 
                 <div class="flex justify-end gap-3 mt-4">
                     <Button @click="handleClose" type="button" variant="red"

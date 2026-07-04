@@ -76,7 +76,7 @@
                                     {{ item.product_id?.name }}
                                 </p>
                                 <p class="text-xs text-gray-500">
-                                    x{{ item.qty }} • ${{ item.subtotal }}
+                                    x{{ item.qty }} • {{ item.subtotal }} {{ order.currency === 'usd' ? '$' : '៛' }} 
                                 </p>
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                 <div class="pt-2 mt-2 text-sm border-t">
                     <div class="flex justify-between">
                         <span class="font-bayon">សរុប</span>
-                        <span class="font-semibold">${{ order.payment }}</span>
+                        <span class="font-semibold">{{ order.payment }} {{ order.currency === 'usd' ? '$' : '៛' }} </span>
                     </div>
 
                     <div class="flex justify-between text-gray-500">

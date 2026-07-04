@@ -4,6 +4,7 @@ export interface TopSellingProduct {
     product_id: string;
     name: string;
     price: number;
+    currency: string;
     image: string;
     created_at: string
     category_id: string

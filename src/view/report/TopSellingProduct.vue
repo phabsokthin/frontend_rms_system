@@ -38,8 +38,8 @@
                 <div class="p-4">
                     <h2 class="mb-1 text-lg font-semibold font-bayon">{{ data.name }}</h2>
                     <p class="mb-1 text-gray-500"><strong>ប្រភេទ:</strong> {{ data.category.name }}</p>
-                    <p class="mb-1 text-gray-500"><strong>តម្លៃលក់:</strong> ${{ data.price }}</p>
-                    <p class="mb-1 text-gray-500"><strong>ចំនួនលក់:</strong> {{ data.totalSold }} {{ data.unit }}</p>
+                    <p class="mb-1 text-gray-500"><strong>តម្លៃលក់:</strong> {{ data.price }}{{ data.currency === 'usd' ? '$' : '៛' }} </p>
+                    <p class="mb-1 text-gray-500"><strong>ចំនួនលក់:</strong>  {{ data.totalSold }} {{ data.unit }}</p>
                     <p class="text-sm text-gray-400"><strong>ចុងក្រោយលក់:</strong> {{ formatDate(data.created_at) }}</p>
                 </div>
             </div>
@@ -50,6 +50,7 @@
             <Pagination :current-page="currentPage" :total-pages="totalPages" :total-items="filteredData.length"
                 :items-per-page="itemsPerPage" :on-page-change="handlePageChange" />
         </div>
+        <!-- <pre>{{ paginatedData }}</pre> -->
     </div>
 </template>
 
@@ -62,7 +63,7 @@ import Select from '../../components/ui/Select.vue';
 import DateTime from '../../components/ui/DateTime.vue';
 import { localServer } from '../../../server/localServer';
 
-import { TopSellingProduct } from '../../types/topSellingProduct';
+import type { TopSellingProduct } from '../../types/topSellingProduct';
 import { categoryStore } from '../../stores/category.store';
 import reportService from '../../services/reportService';
 
